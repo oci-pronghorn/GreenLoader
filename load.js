@@ -8,11 +8,14 @@ var rates = [10, 1000, 5000];
 
 // CPU profiling command/
 // This will print CPU and MEM space separated.
-var profile = "while sleep 1; do ps -o '%cpu,%mem' -p PID | sed 1d >> OUTPUT.profile.txt; done";
+var profile = "while sleep 1; do ps -o '%cpu,%mem' -p PID | sed 1d >> results/OUTPUT.profile.txt; done";
 
 // Vegeta request string.
-var vegetaHtml = "echo \"REQ\" | vegeta attack -duration=5s -rate=RATE -workers=WORKERS | tee results.bin | vegeta report -reporter=plot -output=OUTPUT.html";
-var vegetaTxt = "cat results.bin | vegeta report -reporter=text -output=OUTPUT.txt"
+var vegetaHtml = "echo \"REQ\" | vegeta attack -duration=5s -rate=RATE -workers=WORKERS | tee results.bin | vegeta report -reporter=plot -output=results/OUTPUT.html";
+var vegetaTxt = "cat results.bin | vegeta report -reporter=text -output=results/OUTPUT.txt"
+
+// Create the results folder if it doesn't exist.
+execAsync("mkdir -p results");
 
 // Iterate over services.
 config.services.forEach(function(service) {
