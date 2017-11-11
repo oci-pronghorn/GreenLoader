@@ -3,7 +3,7 @@
         {
             "name": "GoKit",
             "start": "./go-kit-stringsvc2",
-            "req": "POST http://gokit:8080/uppercase\n@gokit-req.json"
+            "req": "POST http://localhost:8080/uppercase\n@gokit-req.json"
         },
         {
             "name": "Rocket",
@@ -16,17 +16,17 @@
             "req": "GET http://localhost:8080"
         },
         {
-            "name": "Spring Boot (Tomcat)",
+            "name": "Spring-Boot-Tomcat",
             "start": "java -jar spring-boot-tomcat/target/gs-spring-boot-0.1.0.jar",
             "req": "GET http://localhost:8080"
         },
         {
-            "name": "Spring Boot (Jetty)",
+            "name": "Spring-Boot-Jetty",
             "start": "java -jar spring-boot-jetty/target/gs-spring-boot-0.1.0.jar",
             "req": "GET http://localhost:8080"
         },
         {
-            "name": "Green Lightning",
+            "name": "Green-Lightning",
             "start": "java -jar FogLight-API/HTTPServer/target/uberHTTPServer.jar",
             "req": "GET http://localhost:8088/testpageB"
         }

@@ -7,7 +7,8 @@ var config = require('./load-config.json');
 var rates = [20, 1000, 5000];
 
 // Vegeta request string.
-var vegeta = "echo \"REQ\" | vegeta -profile=PROFILE attack duration=5s -rate=RATE -workers=WORKERS | tee results.bin | vegeta report -reporter=plot -output=OUTPUT";
+var vegetaHtml = "echo \"REQ\" | vegeta -profile=PROFILE attack -duration=5s -rate=RATE -workers=WORKERS | tee results.bin | vegeta report -reporter=plot -output=OUTPUT.html";
+var vegetaTxt = "cat results.bin | vegeta report -reporter=txt -output=OUTPUT.txt"
 
 // Iterate over services.
 config.services.forEach(function(service) {
@@ -34,15 +35,21 @@ config.services.forEach(function(service) {
 
         // Configure final variables.
         var profile = "cpu";
-        var output = service.name + "-rate" + String(rate) + "-profile" + String(profile);
+        var output = service.name + "-rate" + String(rate);
 
-        // Start Vegeta.
-        var vegetaCommand = vegeta.replace("REQ", service.req).replace("PROFILE", profile).replace("RATE", rate).replace("WORKERS", workers).replace("OUTPUT", output);
+        // Prepare vegeta commands.
+        var vegetaCommand = vegetaHtml.replace("REQ", service.req).replace("PROFILE", profile).replace("RATE", rate).replace("WORKERS", workers).replace("OUTPUT", output);
+        var vegetaCommandTwo = vegetaTxt.replace("OUTPUT", output);
 
         // Execute Vegeta and wait for completion.
-        console.log("Running Vegeta with output: " + output);
         console.log(vegetaCommand);
         execSync(vegetaCommand);
+        console.log(vegetaCommandTwo);
+        execSync(vegetaCommandTwo);
+
+        // Clean up results and CPU profiling files.
+        execSync("rm -rf results.bin");
+        execSync("rm -rf cpu.pprof");
     });
 
     // Terminate process.
