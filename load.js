@@ -8,7 +8,7 @@ var rates = [20, 1000, 5000];
 
 // Vegeta request string.
 var vegetaHtml = "echo \"REQ\" | vegeta -profile=PROFILE attack -duration=5s -rate=RATE -workers=WORKERS | tee results.bin | vegeta report -reporter=plot -output=OUTPUT.html";
-var vegetaTxt = "cat results.bin | vegeta report -reporter=txt -output=OUTPUT.txt"
+var vegetaTxt = "cat results.bin | vegeta report -reporter=text -output=OUTPUT.txt"
 
 // Iterate over services.
 config.services.forEach(function(service) {
