@@ -4,10 +4,14 @@ var execSync = require('child_process').execSync;
 var config = require('./load-config.json');
 
 // Configuration.
-var rates = [20, 1000, 5000];
+var rates = [10, 1000, 5000];
+
+// CPU profiling command/
+// This will print CPU and MEM space separated.
+var profile = "while sleep 1; do ps -o '%cpu,%mem' -p PID | sed 1d > OUTPUT.profile.txt; done";
 
 // Vegeta request string.
-var vegetaHtml = "echo \"REQ\" | vegeta -profile=PROFILE attack -duration=5s -rate=RATE -workers=WORKERS | tee results.bin | vegeta report -reporter=plot -output=OUTPUT.html";
+var vegetaHtml = "echo \"REQ\" | vegeta attack -duration=5s -rate=RATE -workers=WORKERS | tee results.bin | vegeta report -reporter=plot -output=OUTPUT.html";
 var vegetaTxt = "cat results.bin | vegeta report -reporter=text -output=OUTPUT.txt"
 
 // Iterate over services.
@@ -34,22 +38,35 @@ config.services.forEach(function(service) {
         }
 
         // Configure final variables.
-        var profile = "cpu";
         var output = service.name + "-rate" + String(rate);
 
-        // Prepare vegeta commands.
-        var vegetaCommand = vegetaHtml.replace("REQ", service.req).replace("PROFILE", profile).replace("RATE", rate).replace("WORKERS", workers).replace("OUTPUT", output);
+        // Prepare commands.
+        var profileCommand = profile.replace("PID", proc.pid).replace("OUTPUT", output);
+        var vegetaCommand = vegetaHtml.replace("REQ", service.req).replace("RATE", rate).replace("WORKERS", workers).replace("OUTPUT", output);
         var vegetaCommandTwo = vegetaTxt.replace("OUTPUT", output);
+
+        // Begin CPU profiling.
+        console.log(profileCommand);
+        profileProc = exec(profileCommand);
 
         // Execute Vegeta and wait for completion.
         console.log(vegetaCommand);
         execSync(vegetaCommand);
+
+        // Stop CPU profiling.
+        profileProc.kill();
+
+        // Create Vegeta text reports and wait for completion.
         console.log(vegetaCommandTwo);
         execSync(vegetaCommandTwo);
 
         // Clean up results and CPU profiling files.
         execSync("rm -rf results.bin");
-        execSync("rm -rf cpu.pprof");
+
+        // Wait for the service to cool down.
+        var seconds = 2;
+        var waitTill = new Date(new Date().getTime() + seconds * 1000);
+        while (waitTill > new Date()) { }
     });
 
     // Terminate process.
