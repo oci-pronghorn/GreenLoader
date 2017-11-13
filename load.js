@@ -15,7 +15,7 @@ var vegetaHtml = "echo \"REQ\" | vegeta attack -duration=5s -rate=RATE -workers=
 var vegetaTxt = "cat results.bin | vegeta report -reporter=text -output=results/OUTPUT.txt"
 
 // Create the results folder if it doesn't exist.
-execAsync("mkdir -p results");
+execSync("mkdir -p results");
 
 // Iterate over services.
 config.services.forEach(function(service) {
