@@ -1,4 +1,4 @@
-# Micro Service Benchmarks
+# Micro Service Batch Load Tester
 This project was created for [OCI](http://objectcomputing.com) in order to streamline load testing of various web services.
 
 ## How It Works
