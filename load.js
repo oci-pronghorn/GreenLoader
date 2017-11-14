@@ -4,7 +4,7 @@ var execSync = require('child_process').execSync;
 var config = require('./load-config.json');
 
 // Configuration.
-var rates = [10, 1000, 5000];
+var rates = [10, 1000];
 
 // CPU profiling command/
 // This will print CPU and MEM space separated.
@@ -17,11 +17,17 @@ var vegetaTxt = "cat results.bin | vegeta report -reporter=text -output=results/
 // Create the results folder if it doesn't exist.
 execSync("mkdir -p results");
 
+// Index counter in our for loop.
+var i = 0;
+
 // Iterate over services.
 config.services.forEach(function(service) {
 
+    // Modify service name for outfiles.
+    service.name = 0 + "-" + service.name;
+
     // Start the service.
-    proc = exec(service.start);
+    proc = exec(service.start + " > results/" + service.name + ".log.txt");
     console.log("Started " + service.name + " with PID " + proc.pid);
 
     // Wait for the service to start.
@@ -36,8 +42,6 @@ config.services.forEach(function(service) {
         var workers = 1;
         if (rate == 1000) {
             workers = 10;
-        } else if (rate == 5000) {
-            workers = 50;
         }
 
         // Configure final variables.
