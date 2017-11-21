@@ -9,7 +9,7 @@ import io.alicorn.squall.api.http.*;
 public class SquallHello {
     public static void main(String[] args) {
         Squall squall = new Squall();
-        squall.setPort(3344);
+        squall.setPort(3306);
         squall.onGet("/hello", new HttpRequestHandler() {
             public void handle(HttpRequestReader reader, HttpResponseWriter writer) throws Exception {
                 writer.send("Hello, world!");
