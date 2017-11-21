@@ -26,6 +26,11 @@
             "req": "GET http://localhost:8080"
         },
         {
+            "name": "Spring-Boot-Undertow",
+            "start": "java -jar spring-boot/spring-boot-samples/spring-boot-sample-undertow/target/spring-boot-sample-undertow-2.0.0.BUILD-SNAPSHOT.jar",
+            "req": "GET http://localhost:8080"
+        },
+        {
             "name": "Green-Lightning",
             "start": "java -jar FogLight-API/HTTPServer/target/uberHTTPServer.jar",
             "req": "GET http://localhost:8088/testpageB"
