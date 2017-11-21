@@ -31,9 +31,9 @@
             "req": "GET http://localhost:8080"
         },
         {
-            "name": "Green-Lightning",
-            "start": "java -jar FogLight-API/HTTPServer/target/uberHTTPServer.jar",
-            "req": "GET http://localhost:8088/testpageB"
+            "name": "Green-Lightning-Proxy",
+            "start": "java -jar GreenProxy/target/uberTestServer.jar",
+            "req": "GET http://localhost:8082/testPage"
         },
         {
             "name": "Squall",
