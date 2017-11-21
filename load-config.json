@@ -34,6 +34,11 @@
             "name": "Green-Lightning",
             "start": "java -jar FogLight-API/HTTPServer/target/uberHTTPServer.jar",
             "req": "GET http://localhost:8088/testpageB"
+        },
+        {
+            "name": "Squall",
+            "start": "java -jar target/squall-hello.jar",
+            "req": "GET http://localhost:3344/hello"
         }
     ]
 }
