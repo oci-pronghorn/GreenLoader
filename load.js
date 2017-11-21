@@ -11,9 +11,10 @@ var rates = [10, 1000];
 var profile = "while sleep 1; do ps -o '%cpu,%mem' -p PID | sed 1d >> results/OUTPUT.profile.txt; done";
 
 // Vegeta request string.
+var vegetaWarmup = "echo \"REQ\" | vegeta attack -duration=10s -rate=100 -workers=1";
 var vegetaHtml = "echo \"REQ\" | vegeta attack -duration=5s -rate=RATE -workers=WORKERS | tee results.bin | vegeta report -reporter=plot -output=results/OUTPUT.html";
-var vegetaTxt = "cat results.bin | vegeta report -reporter=text -output=results/OUTPUT.txt"
-var vegetaCsv = "cat results.bin | vegeta dump -dumper=csv -output=results/OUTPUT.csv"
+var vegetaTxt = "cat results.bin | vegeta report -reporter=text -output=results/OUTPUT.txt";
+var vegetaCsv = "cat results.bin | vegeta dump -dumper=csv -output=results/OUTPUT.csv";
 
 // Create the results folder if it doesn't exist.
 execSync("mkdir -p results");
@@ -25,16 +26,23 @@ var i = 0;
 config.services.forEach(function(service) {
 
     // Modify service name for outfiles.
-    service.name = 0 + "-" + service.name;
+    i++;
+    service.name = i + "-" + service.name;
 
     // Start the service.
     proc = exec(service.start + " > results/" + service.name + ".log.txt");
     console.log("Started " + service.name + " with PID " + proc.pid);
 
     // Wait for the service to start.
+    console.log("Awaiting complete service startup.");
     var seconds = 10;
     var waitTill = new Date(new Date().getTime() + seconds * 1000);
     while (waitTill > new Date()) { }
+
+    // Warm up the service.
+    var vegetaWarmupCommand = vegetaWarmup.replace("REQ", service.req);
+    console.log("Warming up service: " + vegetaWarmupCommand);
+    execSync(vegetaWarmupCommand);
 
     // Iterate over possible rates.
     rates.forEach(function(rate) {
