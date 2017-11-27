@@ -2,7 +2,7 @@
     "services": [
         {
             "name": "GoKit",
-            "start": "./go-kit-stringsvc2",
+            "start": "go run ~/go/src/github.com/go-kit/kit/examples/stringsvc1/main.go",
             "req": "POST http://localhost:8080/uppercase\n@./gokit-req.json"
         },
         {
