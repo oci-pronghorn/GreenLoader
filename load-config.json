@@ -3,7 +3,7 @@
         {
             "name": "GoKit",
             "start": "./go-kit-stringsvc2",
-            "req": "POST http://localhost:8080/uppercase\n@gokit-req.json"
+            "req": "POST http://localhost:8080/uppercase\n@./gokit-req.json"
         },
         {
             "name": "Rocket",
