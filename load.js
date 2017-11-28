@@ -30,7 +30,7 @@ config.services.forEach(function(service) {
     service.name = i + "-" + service.name;
 
     // Start the service.
-    proc = exec(service.start + " > results/" + service.name + ".log.txt");
+    proc = exec(service.start + " > results/" + service.name + ".log.txt 2>&1");
     console.log("Started " + service.name + " with PID " + proc.pid);
 
     // Wait for the service to start.
@@ -91,7 +91,7 @@ config.services.forEach(function(service) {
     });
 
     // Terminate process.
-    proc.kill();
+    process.kill(proc.pid);
     console.log("Terminated " + service.name);
 })
 
