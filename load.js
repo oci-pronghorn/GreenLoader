@@ -94,3 +94,6 @@ config.services.forEach(function(service) {
     proc.kill();
     console.log("Terminated " + service.name);
 })
+
+// Terminate script.
+process.exit()
