@@ -28,8 +28,8 @@ public class GlHello implements GreenAppParallel {
 		HTTPServerConfig conf = builder.useHTTP1xServer(port).setHost("127.0.0.1");
 
 		conf.setConcurrentChannelsPerDecryptUnit(10);
-		builder.parallelism(5);
-		conf.setConcurrentChannelsPerEncryptUnit(1);
+		builder.parallelism(2);
+		conf.setConcurrentChannelsPerEncryptUnit(10);
 		
 		if (!tls) {
 			conf.useInsecureServer();
