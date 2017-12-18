@@ -1,4 +1,4 @@
-package com.objectcomputing.loadr;
+package com.objectcomputing.greenloader;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -14,9 +14,9 @@ import com.ning.http.client.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class Loadr {
+public class GreenLoader {
 
-    private static final Logger logger = LoggerFactory.getLogger(Loadr.class);
+    private static final Logger logger = LoggerFactory.getLogger(GreenLoader.class);
 
     /**
      * Kicks off a load test on a service.
@@ -62,7 +62,7 @@ public class Loadr {
                     config.setAllowPoolingConnections(true);
                     config.setAcceptAnyCertificate(true);
                     config.setFollowRedirect(true);
-                    config.setUserAgent("Loadr");
+                    config.setUserAgent("GreenLoader");
                     AsyncHttpClient asyncHttpClient = new AsyncHttpClient(config.build());
                     Request request;
 
@@ -72,7 +72,7 @@ public class Loadr {
                     } else if ("POST".equalsIgnoreCase(method)) {
                         request = asyncHttpClient.preparePost(host).setBody(payload).build();
                     } else {
-                        throw new IllegalArgumentException("Loadr only supports POST and GET at this time.");
+                        throw new IllegalArgumentException("GreenLoader only supports POST and GET at this time.");
                     }
 
                     // Perform all requests.
