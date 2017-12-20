@@ -5,16 +5,7 @@ var config = require('./load-config.json');
 
 // Configuration.
 var rates = [10, 1000];
-
-// CPU profiling command/
-// This will print CPU and MEM space separated.
-var profile = "while sleep 1; do ps -o '%cpu,%mem' -p PID | sed 1d >> results/OUTPUT.profile.txt; done";
-
-// Vegeta request string.
-var vegetaWarmup = "echo \"REQ\" | vegeta attack -duration=10s -rate=100 -workers=1";
-var vegetaHtml = "echo \"REQ\" | vegeta attack -duration=5s -rate=RATE -workers=WORKERS | tee results.bin | vegeta report -reporter=plot -output=results/OUTPUT.html";
-var vegetaTxt = "cat results.bin | vegeta report -reporter=text -output=results/OUTPUT.txt";
-var vegetaCsv = "cat results.bin | vegeta dump -dumper=csv -output=results/OUTPUT.csv";
+var greenLoader = "java -jar green-loader/target/greenloader.jar ENDPOINT METHOD PAYLOAD results/OUTPUT WORKERS RATE 5"
 
 // Create the results folder if it doesn't exist.
 execSync("mkdir -p results");
@@ -39,11 +30,6 @@ config.services.forEach(function(service) {
     var waitTill = new Date(new Date().getTime() + seconds * 1000);
     while (waitTill > new Date()) { }
 
-    // Warm up the service.
-    var vegetaWarmupCommand = vegetaWarmup.replace("REQ", service.req);
-    console.log("Warming up service: " + vegetaWarmupCommand);
-    execSync(vegetaWarmupCommand);
-
     // Iterate over possible rates.
     rates.forEach(function(rate) {
 
@@ -53,38 +39,22 @@ config.services.forEach(function(service) {
             workers = 10;
         }
 
-        // Configure final variables.
+        // Output filename by service and rate.
         var output = service.name + "-rate" + String(rate);
 
-        // Prepare commands.
-        var profileCommand = profile.replace("PID", proc.pid).replace("OUTPUT", output);
-        var vegetaCommand = vegetaHtml.replace("REQ", service.req).replace("RATE", rate).replace("WORKERS", workers).replace("OUTPUT", output);
-        var vegetaCommandTwo = vegetaTxt.replace("OUTPUT", output);
-        var vegetaCommandThree = vegetaCsv.replace("OUTPUT", output);
-
-        // Begin CPU profiling.
-        console.log(profileCommand);
-        profileProc = exec(profileCommand);
+        // Prepare command.
+        var greenLoaderCommand = greenLoader.replace("OUTPUT", output)
+                                            .replace("ENDPOINT", service.endpoint).replace("METHOD", service.method)
+                                            .replace("PAYLOAD", service.payload).replace("WORKERS", workers)
+                                            .replace("RATE", rate);
 
         // Execute Vegeta and wait for completion.
-        console.log(vegetaCommand);
-        execSync(vegetaCommand);
-
-        // Stop CPU profiling.
-        profileProc.kill();
-
-        // Create Vegeta text reports and wait for completion.
-        console.log(vegetaCommandTwo);
-        execSync(vegetaCommandTwo);
-        console.log(vegetaCommandThree);
-        execSync(vegetaCommandThree);
-
-        // Clean up results and CPU profiling files.
-        execSync("rm -rf results.bin");
+        console.log(greenLoaderCommand);
+        execSync(greenLoaderCommand);
 
         // Wait for the service to cool down.
         console.log("Await cooldown.");
-        var seconds = 10;
+        var seconds = 1;
         var waitTill = new Date(new Date().getTime() + seconds * 1000);
         while (waitTill > new Date()) { }
         console.log("Cooldown complete.");

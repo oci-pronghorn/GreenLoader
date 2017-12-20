@@ -8,6 +8,7 @@ import java.nio.file.Paths;
 import java.util.Comparator;
 import java.util.concurrent.*;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.concurrent.locks.LockSupport;
 
 import com.ning.http.client.*;
@@ -158,11 +159,14 @@ public class GreenLoader {
         // Generate CSV data.
         logger.info("Generating CSV data.");
         StringBuilder csv = new StringBuilder();
-        csv.append("Latency,Status,Timestamp\n");
+        // csv.append("Latency (Microseconds),Status,Timestamp,Index\n");
+        int i = 0;
         for (long[] result : results) {
-            csv.append(result[0]).append(",");
+            csv.append(result[0] / 1000).append(",");
             csv.append(result[1]).append(",");
-            csv.append(result[2]).append("\n");
+            csv.append(result[2]).append(",");
+            csv.append(i).append("\n");
+            i++;
         }
 
         // Write CSV data to file.
