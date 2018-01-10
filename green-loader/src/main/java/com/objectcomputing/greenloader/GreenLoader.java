@@ -1,5 +1,6 @@
 package com.objectcomputing.greenloader;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
@@ -11,6 +12,11 @@ import java.util.Arrays;
 import java.util.concurrent.locks.LockSupport;
 
 import com.ning.http.client.*;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartUtilities;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.data.category.DefaultCategoryDataset;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -139,7 +145,32 @@ public class GreenLoader {
         long[][] results;
         results = applyLoad(args[0], args[1], args[2], Integer.valueOf(args[4]), Integer.valueOf(args[5]), Integer.valueOf(args[6]));
 
-        // Sort results by UNIX timestamp.
+        // Generate chart data.
+        logger.info("Generating JPEG data.");
+        DefaultCategoryDataset lineChartDataset = new DefaultCategoryDataset();
+        for (int j = 0; j < results.length; j++) {
+            lineChartDataset.addValue(results[j][0] / 1000F, "Response Time (MS)", String.valueOf(j));
+        }
+
+        JFreeChart lineChartObject = ChartFactory.createLineChart(
+                "Latency over Time", "Request Number",
+                "Request Latency",
+                lineChartDataset, PlotOrientation.VERTICAL,
+                true, false, false);
+
+        int width = 3000;    /* Width of the image */
+        int height = 1500;   /* Height of the image */
+        File lineChart = new File(args[3] + ".jpeg" );
+
+        try {
+            ChartUtilities.saveChartAsJPEG(lineChart, lineChartObject, width, height);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        logger.info("JPEG data written to file.");
+
+        // Sort results by latency.
         logger.info("Sorting results.");
         Arrays.sort(results, new Comparator<long[]>() {
             @Override
