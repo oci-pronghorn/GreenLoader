@@ -8,7 +8,6 @@ import java.nio.file.Paths;
 import java.util.Comparator;
 import java.util.concurrent.*;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.concurrent.locks.LockSupport;
 
 import com.ning.http.client.*;
@@ -145,15 +144,15 @@ public class GreenLoader {
         Arrays.sort(results, new Comparator<long[]>() {
             @Override
             public int compare(final long[] entry1, final long[] entry2) {
-                return Long.compare(entry1[2], entry2[2]);
+                return Long.compare(entry1[0], entry2[0]);
             }
         });
 
         // Report median data.
         if (results.length % 2 == 0) {
-            logger.info("Median Response Time (NS): {}", ((double) results[results.length / 2][2] + (double) results[results.length / 2 - 1][2]) / 2);
+            logger.info("Median Response Time (NS): {}", ((double) results[results.length / 2][0] + (double) results[results.length / 2 - 1][0]) / 2);
         } else {
-            logger.info("Median Response Time (NS): {}", ((double) results[results.length / 2][2]));
+            logger.info("Median Response Time (NS): {}", ((double) results[results.length / 2][0]));
         }
 
         // Generate CSV data.
