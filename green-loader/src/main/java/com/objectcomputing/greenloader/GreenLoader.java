@@ -158,10 +158,10 @@ public class GreenLoader {
         // Generate CSV data.
         logger.info("Generating CSV data.");
         StringBuilder csv = new StringBuilder();
-        // csv.append("Latency (Microseconds),Status,Timestamp,Index\n");
+        csv.append("Latency (Microseconds),Status,Timestamp,Index\n");
         int i = 0;
         for (long[] result : results) {
-            csv.append(result[0] / 1000).append(",");
+            csv.append(result[0] / 1000F).append(",");
             csv.append(result[1]).append(",");
             csv.append(result[2]).append(",");
             csv.append(i).append("\n");
