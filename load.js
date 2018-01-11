@@ -6,7 +6,7 @@ var config = require('./load-config.json');
 // Configuration.
 var rates = [10, 1000];
 var fortio="fortio load -c WORKERS -qps RATE -data-dir results -json results/OUTPUT.json -labels NAME ENDPOINT"
-var fortioPost="fortio load -c WORKERS -qps RATE -data-dir results -json results/OUTPUT.json -labels NAME -payload \"PAYLOAD\" ENDPOINT"
+var fortioPost="fortio load -c WORKERS -qps RATE -data-dir results -json results/OUTPUT.json -labels NAME -payload 'PAYLOAD' ENDPOINT"
 
 // Create the results folder if it doesn't exist.
 execSync("mkdir -p results");
@@ -52,9 +52,11 @@ config.services.forEach(function(service) {
         }
 
         // Prepare command.
-        fortioCommand = fortio.replace("OUTPUT", output)
-                              .replace("ENDPOINT", service.endpoint)
-                              .replace("WORKERS", workers).replace("RATE", rate);
+        fortioCommand = fortioCommand.replace("OUTPUT", output)
+                                     .replace("ENDPOINT", service.endpoint)
+                                     .replace("WORKERS", workers)
+                                     .replace("RATE", rate)
+                                     .replace("NAME", service.name);
 
         // Execute Vegeta and wait for completion.
         console.log(fortioCommand);
@@ -64,6 +66,7 @@ config.services.forEach(function(service) {
     // Terminate process.
     process.kill(proc.pid);
     console.log("Terminated " + service.name);
+    console.log("==============================================================");
 })
 
 // Terminate script.
