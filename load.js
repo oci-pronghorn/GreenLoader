@@ -5,7 +5,8 @@ var config = require('./load-config.json');
 
 // Configuration.
 var rates = [10, 1000];
-var greenLoader = "java -jar green-loader/target/greenloader.jar ENDPOINT METHOD PAYLOAD results/OUTPUT WORKERS RATE 5"
+var fortio="fortio load -c WORKERS -qps RATE -data-dir results -json results/OUTPUT.json -labels NAME ENDPOINT"
+var fortioPost="fortio load -c WORKERS -qps RATE -data-dir results -json results/OUTPUT.json -labels NAME -payload \"PAYLOAD\" ENDPOINT"
 
 // Create the results folder if it doesn't exist.
 execSync("mkdir -p results");
@@ -42,22 +43,22 @@ config.services.forEach(function(service) {
         // Output filename by service and rate.
         var output = service.name + "-rate" + String(rate);
 
+        // Choose corect command (POST vs GET)
+        var fortioCommand;
+        if (service.payload) {
+            fortioCommand = fortioPost.replace("PAYLOAD", service.payload);
+        } else {
+            fortioCommand = fortio;
+        }
+
         // Prepare command.
-        var greenLoaderCommand = greenLoader.replace("OUTPUT", output)
-                                            .replace("ENDPOINT", service.endpoint).replace("METHOD", service.method)
-                                            .replace("PAYLOAD", service.payload).replace("WORKERS", workers)
-                                            .replace("RATE", rate);
+        fortioCommand = fortio.replace("OUTPUT", output)
+                              .replace("ENDPOINT", service.endpoint)
+                              .replace("WORKERS", workers).replace("RATE", rate);
 
         // Execute Vegeta and wait for completion.
-        console.log(greenLoaderCommand);
-        execSync(greenLoaderCommand);
-
-        // Wait for the service to cool down.
-        console.log("Await cooldown.");
-        var seconds = 1;
-        var waitTill = new Date(new Date().getTime() + seconds * 1000);
-        while (waitTill > new Date()) { }
-        console.log("Cooldown complete.");
+        console.log(fortioCommand);
+        execSync(fortioCommand);
     });
 
     // Terminate process.
