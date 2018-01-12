@@ -1,13 +1,6 @@
 {
     "services": [
         {
-            "name": "Rocket",
-            "start": "cargo run --manifest-path hello-rocket/Cargo.toml",
-            "endpoint": "http://127.0.0.1:8000",
-            "method": "GET",
-            "payload": null
-        },
-        {
             "name": "Node",
             "start": "node node.js",
             "endpoint": "http://127.0.0.1:3301",
