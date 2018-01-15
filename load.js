@@ -11,18 +11,11 @@ var fortioPost="fortio load -c WORKERS -qps RATE -data-dir results -json results
 // Create the results folder if it doesn't exist.
 execSync("mkdir -p results");
 
-// Index counter in our for loop.
-var i = 0;
-
-// Iterate over services.
+// Run load tests.
 config.services.forEach(function(service) {
 
-    // Modify service name for outfiles.
-    i++;
-    service.name = i + "-" + service.name;
-
     // Start the service.
-    proc = exec(service.start + " > results/" + service.name + ".log.txt 2>&1");
+    var proc = exec(service.start + " > results/" + service.name + ".log.txt 2>&1");
     console.log("Started " + service.name + " with PID " + proc.pid);
 
     // Wait for the service to start.
@@ -67,7 +60,27 @@ config.services.forEach(function(service) {
     process.kill(proc.pid);
     console.log("Terminated " + service.name);
     console.log("==============================================================");
-})
+});
 
-// Terminate script.
+// Quit.
+// TODO: Implement automatic image capture of graphs below.
 process.exit()
+return;
+
+// Start fortio reporting server.
+var fortioProc = exec("fortio report", {cwd: __dirname + "/results"});
+
+// Generate reports.
+config.services.forEach(function(service) {
+
+    // Iterate over possible rates.
+    rates.forEach(function(rate) {
+
+        // Report filename by service and rate.
+        var report = service.name + "-rate" + String(rate) + ".json";
+    });
+
+});
+
+// Terminate script and subprocesses.
+process.kill(fortioProc.pid);
