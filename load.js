@@ -14,6 +14,9 @@ execSync("mkdir -p results");
 // Run load tests.
 config.services.forEach(function(service) {
 
+    // TODO: Run Away!!!
+    // return;
+
     // Start the service.
     var proc = exec(service.start + " > results/" + service.name + ".log.txt 2>&1");
     console.log("Started " + service.name + " with PID " + proc.pid);
@@ -65,7 +68,11 @@ config.services.forEach(function(service) {
 // Quit.
 // TODO: Implement automatic image capture of graphs below.
 process.exit()
-return;
+// return;
+
+// Import dependencies.
+var domtoimage = require('dom-to-image'); // dom-to-image
+var save = require('save-file'); // save-file
 
 // Start fortio reporting server.
 var fortioProc = exec("fortio report", {cwd: __dirname + "/results"});
@@ -78,6 +85,11 @@ config.services.forEach(function(service) {
 
         // Report filename by service and rate.
         var report = service.name + "-rate" + String(rate) + ".json";
+
+        // Fetch report page.
+        var uri = "http://localhost:8080/browse?url=" + report;
+        var document = 0;
+        
     });
 
 });
