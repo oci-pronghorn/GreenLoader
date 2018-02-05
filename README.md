@@ -2,13 +2,14 @@
 This project was created for [OCI](http://objectcomputing.com) in order to streamline load testing of various web services.
 
 ## How It Works
-This project uses Node.js and [Vegeta](https://github.com/tsenart/vegeta) to create a series of ***HTML Graphs***, ***Text Reports***, and ***Estimated CPU/Memory Reports*** for a variety of microservice frameworks.
+This project uses Node.js and [Fortio](https://github.com/istio/fortio) to create benchmarks for a variety of microservice frameworks.
 
 To use this project, you will need the following:
 
 - A Unix (Linux or Mac OS) operating system.
 - Node.js
-- [Vegeta](https://github.com/tsenart/vegeta)
+- A JDK
+- [Fortio](https://github.com/istio/fortio)
 
 ## Configuration
 Configuration is done entirely via the `load-config.json` file. This file has the following structure:
@@ -16,9 +17,11 @@ Configuration is done entirely via the `load-config.json` file. This file has th
     {
         "services": [
             {
-                "name": "Service-1-Name (No spaces or special characters)",
+                "name": "Service-Name (No spaces or special characters)",
                 "start": "Shell command to execute to start the service (relative to where the load.js file is started)",
-                "req": "Vegeta requests (line separated) to pipe to Vegeta when testing"
+                "endpoint": "Service URL to hit with a request.",
+                "method": "GET or POST",
+                "payload": "null if GET, or payload data if POST"
             }
         ]
     }
