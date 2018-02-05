@@ -10,7 +10,7 @@ import com.ociweb.pronghorn.network.config.HTTPContentTypeDefaults;
 
 public class GlHello implements GreenAppParallel {
     public static void main(String[] args) {
-        GreenRuntime.run(new GlHello(false, 3305, false));
+        GreenRuntime.run(new GlHello(false, 3305, true));
     }
 
     private final int port;
