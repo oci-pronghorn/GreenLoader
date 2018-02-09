@@ -4,18 +4,15 @@ var execSync = require('child_process').execSync;
 var config = require('./load-config.json');
 
 // Configuration.
-var rates = [10, 1000];
-var fortio="fortio load -c WORKERS -qps RATE -data-dir results -json results/OUTPUT.json -labels NAME ENDPOINT"
-var fortioPost="fortio load -c WORKERS -qps RATE -data-dir results -json results/OUTPUT.json -labels NAME -payload 'PAYLOAD' ENDPOINT"
+var rates = [100, 5000];
+var fortio="fortio load -t 100s -c WORKERS -qps RATE -data-dir results -json results/OUTPUT.json -labels NAME ENDPOINT"
+var fortioPost="fortio load -t 100s -c WORKERS -qps RATE -data-dir results -json results/OUTPUT.json -labels NAME -payload 'PAYLOAD' ENDPOINT"
 
 // Create the results folder if it doesn't exist.
 execSync("mkdir -p results");
 
 // Run load tests.
 config.services.forEach(function(service) {
-
-    // TODO: Run Away!!!
-    // return;
 
     // Start the service.
     var proc = exec(service.start + " > results/" + service.name + ".log.txt 2>&1");
@@ -65,11 +62,9 @@ config.services.forEach(function(service) {
     console.log("==============================================================");
 });
 
-// Quit.
-// TODO: Implement automatic image capture of graphs below.
 process.exit()
-// return;
 
+// TODO: Implement automatic image capture of graphs below.
 // Import dependencies.
 var domtoimage = require('dom-to-image'); // dom-to-image
 var save = require('save-file'); // save-file
