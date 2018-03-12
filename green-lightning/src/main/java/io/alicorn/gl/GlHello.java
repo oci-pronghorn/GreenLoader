@@ -29,6 +29,7 @@ public class GlHello implements GreenAppParallel {
 
 		conf.setConcurrentChannelsPerDecryptUnit(10);
 		conf.setConcurrentChannelsPerEncryptUnit(10);
+		builder.parallelTracks(4);
 		
 		if (!tls) {
 			conf.useInsecureServer();
