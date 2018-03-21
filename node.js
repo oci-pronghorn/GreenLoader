@@ -3,11 +3,19 @@ var http = require('http');
 
 // create an http server to handle requests and response 
 http.createServer(function (req, res) { 
-    // sending a response header of 200 OK 
-    res.writeHead(200, {'Content-Type': 'text/plain'}); 
-    
-    // print out Hello World 
-    res.end('Hello World\n'); 
+
+    var jsonString = '';
+
+    req.on('data', function (data) {
+        jsonString += data;
+    });
+
+    req.on('end', function () {
+        var json = JSON.parse(jsonString);
+        res.writeHead(200, {'Content-Type': 'application/json'}); 
+        var response = {"data": 'Hello, ' + json.name + '!'};
+        res.end(JSON.stringify(response)); 
+    });
 
 // use port 8080 
 }).listen(3301); 
