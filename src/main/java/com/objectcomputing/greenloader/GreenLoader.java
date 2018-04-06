@@ -44,6 +44,7 @@ public class GreenLoader {
             JsonObject serviceObject = serviceValue.asObject();
 
             // Begin load test.
+            logger.info("===============================================================================");
             logger.info("Beginning load test for: {}", serviceObject.getString("name", null));
 
             // Start the service.
