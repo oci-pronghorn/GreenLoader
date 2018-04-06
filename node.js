@@ -13,7 +13,7 @@ http.createServer(function (req, res) {
     req.on('end', function () {
         var json = JSON.parse(jsonString);
         res.writeHead(200, {'Content-Type': 'application/json'}); 
-        var response = {"data": 'Hello, ' + json.name + '!'};
+        var response = {"message": 'Hello, ' + json.name + '!', "happy": !json.happy, "age": json.age * 2};
         res.end(JSON.stringify(response)); 
     });
 

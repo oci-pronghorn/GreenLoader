@@ -15,9 +15,11 @@ public class HelloController {
     @RequestMapping(value="/hello", method=RequestMethod.POST, consumes=MediaType.ALL_VALUE, produces=MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public String index(HttpEntity<String> httpEntity) {
-        String name = Json.parse(httpEntity.getBody()).asObject().get("name").asString();
+        JsonObject req = Json.parse(httpEntity.getBody()).asObject();
         JsonObject response = new JsonObject();
-        response.set("data", "Hello, " + name + "!");
+        response.set("message", "Hello, " + req.getString("name", null) + "!");
+        response.set("happy", !req.getBoolean("happy", false));
+        response.set("age", req.getInt("age", 0) * 2);
         return response.toString();
     }
 }

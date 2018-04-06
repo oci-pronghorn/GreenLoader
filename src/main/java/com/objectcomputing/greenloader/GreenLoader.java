@@ -29,7 +29,7 @@ public class GreenLoader {
     // 10_000 = 8 minutes.
     public static final int CYCLES_PER_TRACK = 10_000;
     public static final long CYCLE_RATE = 1_200L;
-    public static final long DURATION = 60_000L;
+    public static final long DURATION = 1_000_000L;
 
     public static void main(String[] args) throws Exception {
 
@@ -65,8 +65,9 @@ public class GreenLoader {
             loadTesterConfig.cycleRate = CYCLE_RATE;
 
             // Wait for service start.
-            Thread.sleep(5000);
-            logger.info("Started service via {}", serviceObject.getString("name", null));
+            logger.info("Starting service via {}", serviceObject.getString("start", null));
+            Thread.sleep(10_000);
+            logger.info("Started service via {}", serviceObject.getString("start", null));
 
             // Run load tester.
             logger.info("Starting load test.");
@@ -79,5 +80,8 @@ public class GreenLoader {
             logger.info("Stopping service.");
             process.destroy();
         }
+
+        // Quit.
+        System.exit(0);;
     }
 }

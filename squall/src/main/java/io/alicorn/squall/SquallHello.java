@@ -13,9 +13,11 @@ public class SquallHello {
         Squall squall = Squall.create(3306);
         squall.onPost("/hello", new HttpRequestHandler() {
             public void handle(HttpRequestReader reader, HttpResponseWriter writer) throws Exception {
-                String name = Json.parse(reader.getBody()).asObject().get("name").asString();
+                JsonObject req = Json.parse(reader.getBody()).asObject();
                 JsonObject response = new JsonObject();
-                response.set("data", "Hello, " + name + "!");
+                response.set("message", "Hello, " + req.getString("name", null) + "!");
+                response.set("happy", !req.getBoolean("happy", false));
+                response.set("age", req.getInt("age", 0) * 2);
                 writer.setContentType(HttpContentType.APPLICATION_JSON);
                 writer.send(response.toString());
             }
