@@ -7,6 +7,9 @@ import com.ociweb.gl.api.GreenCommandChannel;
 import com.ociweb.gl.api.GreenRuntime;
 import com.ociweb.gl.api.HTTPServerConfig;
 import com.ociweb.pronghorn.network.config.HTTPContentTypeDefaults;
+import com.ociweb.json.JSONExtractor;
+import com.ociweb.json.JSONExtractorCompleted;
+import com.ociweb.json.JSONType;
 
 public class GlHello implements GreenAppParallel {
     public static void main(String[] args) {
@@ -16,6 +19,9 @@ public class GlHello implements GreenAppParallel {
     private final int port;
 	private final boolean tls;
 	private final boolean telemtry;
+
+	// Trackers for JSON.
+	private long name_a, name_b, name_c;
 	
 	public GlHello(boolean tls, int port, boolean telemtry) {
 		this.tls = tls;
@@ -34,8 +40,25 @@ public class GlHello implements GreenAppParallel {
 		if (!tls) {
 			conf.useInsecureServer();
 		}
-				
-		builder.defineRoute().path("/hello");
+
+		// Define JSON extraction behavior.
+        JSONExtractorCompleted extractor =
+                new JSONExtractor()
+                        .newPath(JSONType.TypeString).key("name").completePath("name_a")
+                        .newPath(JSONType.TypeBoolean).key("happy").completePath("name_b")
+                        .newPath(JSONType.TypeInteger).key("age").completePath("name_c");
+
+		// Define route for receiving request.
+		int routeId = builder.defineRoute(extractor).path("/hello").routeId();
+
+		// Extract JSON element IDs.
+        name_a = builder.lookupFieldByName(routeId, "name_a");
+        name_b = builder.lookupFieldByName(routeId, "name_b");
+        name_c = builder.lookupFieldByName(routeId, "name_c");
+
+		// Define topic for publishing from the request receiver to the request responder.
+        builder.definePrivateTopic(1 << 16, 100, "/send/200", "consumer", "responder");
+        builder.usePrivateTopicsExclusively();
 		
 		if (telemtry) {
 			builder.enableTelemetry();
@@ -47,12 +70,13 @@ public class GlHello implements GreenAppParallel {
 
 	@Override
 	public void declareParallelBehavior(GreenRuntime runtime) {
-		final GreenCommandChannel cmd = runtime.newCommandChannel(NET_RESPONDER);
-		
-		runtime.addRestListener((r)->{
-			return cmd.publishHTTPResponse(r, 200, HTTPContentTypeDefaults.TXT, (w)->{
-				w.append("Hello, World!");
-			});
-		}).includeAllRoutes();	
+
+	    // Add a consumer for handling the inbound REST requests.
+        runtime.addRestListener("consumer", new RestConsumer(runtime, name_a, name_b, name_c))
+                .includeAllRoutes();
+
+        // Add a responder for handling all outbound REST responses.
+        runtime.addPubSubListener("responder", new RestResponder(runtime))
+                .addSubscription("/send/200");
 	}
 }
