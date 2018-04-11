@@ -15,9 +15,10 @@ public class RestResponder implements PubSubListener{
 
     private static final JSONRenderer<ChannelReader> jsonRenderer = new JSONRenderer<ChannelReader>()
             .beginObject()
-            .string("name", o->o.readUTF())
-            .bool("happy", o->o.readBoolean())
-            .integer("age", o->o.readPackedInt())
+//            .string("name", o->"Hey buddy!")
+            .string("name", channelReader -> "Hey there!")
+            .bool("happy", channelReader -> !channelReader.readBoolean())
+            .integer("age", channelReader -> channelReader.readInt() * 2)
             .endObject();
 
     private ChannelReader payloadW;

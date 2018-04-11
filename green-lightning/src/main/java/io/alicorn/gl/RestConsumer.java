@@ -20,10 +20,14 @@ public class RestConsumer implements RestListener {
 
         @Override
         public void write(ChannelWriter writer) {
+            // Write connection data.
             writer.writePackedLong(requestW.getConnectionId());
             writer.writePackedLong(requestW.getSequenceCode());
-            long track = 0;//unknown
-            writer.writePackedLong(track);
+
+            // Write JSON data.
+//            writer.writeUTF8Text(requestW.structured().readText(fieldA));
+            writer.writeBoolean(requestW.structured().readBoolean(fieldB));
+            writer.writeInt(requestW.structured().readInt(fieldC));
         }
 
     };
@@ -43,8 +47,6 @@ public class RestConsumer implements RestListener {
         if (!( request.isVerbPost() || request.isVerbGet() )) {
             cmd2.publishHTTPResponse(request, 404);
         }
-
-//        int b = request.structured().readInt(fieldB);
 
         requestW = request;
         return cmd2.publishTopic("/send/200", w);
