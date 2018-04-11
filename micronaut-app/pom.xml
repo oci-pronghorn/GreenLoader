@@ -20,9 +20,25 @@
             <version>1.0.0-SNAPSHOT</version>
         </dependency>
         <dependency>
+            <groupId>io.micronaut</groupId>
+            <artifactId>http-server-netty</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>io.micronaut</groupId>
+            <artifactId>inject-java</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
             <groupId>com.eclipsesource.minimal-json</groupId>
             <artifactId>minimal-json</artifactId>
             <version>0.9.5</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>1.7.25</version>
         </dependency>
     </dependencies>
 
@@ -33,6 +49,14 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.7.0</version>
                 <configuration>
+                    <annotationProcessors>
+                        <annotationProcessor>
+                            io.micronaut.annotation.processing.BeanDefinitionInjectProcessor
+                        </annotationProcessor>
+                        <annotationProcessor>
+                            io.micronaut.annotation.processing.PackageConfigurationInjectProcessor
+                        </annotationProcessor>
+                    </annotationProcessors>
                     <source>1.8</source>
                     <target>1.8</target>
                 </configuration>
