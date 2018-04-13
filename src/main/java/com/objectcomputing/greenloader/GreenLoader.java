@@ -27,7 +27,7 @@ public class GreenLoader {
     private static final Logger logger = LoggerFactory.getLogger(GreenLoader.class);
 
     // 10_000 = 8 minutes.
-    public static final int CYCLES_PER_TRACK = 10_000;
+    public static final int CYCLES_PER_TRACK = 100_000;
     public static final long CYCLE_RATE = 1_200L;
     public static final long DURATION = 60_000L;
 
@@ -36,6 +36,9 @@ public class GreenLoader {
         // Parse the load configuration.
         JsonObject file = Json.parse(new InputStreamReader(new FileInputStream(new File("load-config.json")))).asObject();
         JsonArray config = file.get("services").asArray();
+
+        // Print working directory.
+        logger.info("Starting load tests in working directory: {}", System.getProperty("user.dir"));
 
         // Iterate over all services.
         for (JsonValue serviceValue : config) {
@@ -71,10 +74,9 @@ public class GreenLoader {
             logger.info("Started service via {}", serviceObject.getString("start", null));
 
             // Run load tester.
-            logger.info("Starting load test.");
-            GreenRuntime.testConcurrentUntilShutdownRequested(
-                    new ParallelClientLoadTester(loadTesterConfig, loadTesterPayload),
-                    DURATION);
+            logger.info("Starting load test against {}{} on port {}.", loadTesterConfig.host, loadTesterConfig.route, loadTesterConfig.port);
+            ParallelClientLoadTester tester = new ParallelClientLoadTester(loadTesterConfig, loadTesterPayload);
+            GreenRuntime.testConcurrentUntilShutdownRequested(tester, DURATION);
             logger.info("Load test complete.");
 
             // Stop service.

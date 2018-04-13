@@ -10,7 +10,7 @@ import io.alicorn.squall.api.http.*;
 
 public class SquallHello {
     public static void main(String[] args) {
-        Squall squall = Squall.create(3306);
+        Squall squall = Squall.create(3307);
         squall.onPost("/hello", new HttpRequestHandler() {
             public void handle(HttpRequestReader reader, HttpResponseWriter writer) throws Exception {
                 JsonObject req = Json.parse(reader.getBody()).asObject();
