@@ -1,9 +1,6 @@
 package io.alicorn.gl;
 
-import com.ociweb.gl.api.GreenCommandChannel;
-import com.ociweb.gl.api.GreenRuntime;
-import com.ociweb.gl.api.PubSubListener;
-import com.ociweb.gl.api.Writable;
+import com.ociweb.gl.api.*;
 import com.ociweb.json.encode.JSONRenderer;
 import com.ociweb.pronghorn.network.config.HTTPContentTypeDefaults;
 import com.ociweb.pronghorn.pipe.ChannelReader;
@@ -12,11 +9,11 @@ import com.ociweb.pronghorn.pipe.ChannelWriter;
 public class RestResponder implements PubSubListener{
 
     private final GreenCommandChannel cmd;
+    private final HTTPResponseService httpResponseService;
 
     private static final JSONRenderer<ChannelReader> jsonRenderer = new JSONRenderer<ChannelReader>()
             .beginObject()
-//            .string("name", o->"Hey buddy!")
-            .string("name", channelReader -> "Hey there!")
+            .string("name", channelReader -> "Hey, " + channelReader.readUTF() + "!")
             .bool("happy", channelReader -> !channelReader.readBoolean())
             .integer("age", channelReader -> channelReader.readInt() * 2)
             .endObject();
@@ -31,14 +28,14 @@ public class RestResponder implements PubSubListener{
 
     public RestResponder(GreenRuntime runtime) {
         cmd = runtime.newCommandChannel();
-        cmd.ensureHTTPServerResponse(128,400);
+        httpResponseService = cmd.newHTTPResponseService();
     }
 
     @Override
     public boolean message(CharSequence topic, ChannelReader payload) {
 
         payloadW = payload;
-        return cmd.publishHTTPResponse(
+        return httpResponseService.publishHTTPResponse(
                 payload.readPackedLong(),
                 payload.readPackedLong(),
                 200, false, HTTPContentTypeDefaults.JSON, w);

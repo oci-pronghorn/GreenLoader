@@ -5,42 +5,35 @@
             "start": "node node.js",
             "endpoint": "/hello",
             "port": 3301,
-            "payload": {"name": "Bench", "happy": true, "age": 13}
-        },
-        {
-            "name": "Spring-Boot-Tomcat",
-            "start": "java -jar spring-boot-tomcat/target/gs-spring-boot-0.1.0.jar --server.port=3302",
-            "endpoint": "/hello",
-            "port": 3302,
-            "payload": {"name": "Bench", "happy": true, "age": 13}
+            "payload": {"name": "Rick", "happy": true, "age": 13}
         },
         {
             "name": "Spring-Boot-Jetty",
             "start": "java -jar spring-boot-jetty/target/gs-spring-boot-0.1.0.jar --server.port=3303",
             "endpoint": "/hello",
             "port": 3303,
-            "payload": {"name": "Bench", "happy": true, "age": 13}
+            "payload": {"name": "Rick", "happy": true, "age": 13}
         },
         {
             "name": "Green-Lightning-Telemetry",
             "start": "java -jar green-lightning/target/gl-hello.jar true 3305",
             "endpoint": "/hello",
             "port": 3305,
-            "payload": {"name": "Bench", "happy": true, "age": 13}
+            "payload": {"name": "Rick", "happy": true, "age": 13}
         },
         {
             "name": "Green-Lightning-No-Telemetry",
-            "start": "java -jar green-lightning/target/gl-hello.jar false 3307",
+            "start": "java -jar green-lightning/target/gl-hello.jar false 3306",
             "endpoint": "/hello",
-            "port": 3307,
-            "payload": {"name": "Bench", "happy": true, "age": 13}
+            "port": 3306,
+            "payload": {"name": "Rick", "happy": true, "age": 13}
         },
         {
             "name": "Squall",
             "start": "java -jar squall/target/squall-hello.jar",
             "endpoint": "/hello",
-            "port": 3306,
-            "payload": {"name": "Bench", "happy": true, "age": 13}
+            "port": 3307,
+            "payload": {"name": "Rick", "happy": true, "age": 13}
         }
     ]
 }

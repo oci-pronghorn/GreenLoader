@@ -1,20 +1,18 @@
 package io.alicorn.gl;
 
-import com.ociweb.gl.api.GreenCommandChannel;
-import com.ociweb.gl.api.GreenRuntime;
-import com.ociweb.gl.api.HTTPRequestReader;
-import com.ociweb.gl.api.MsgCommandChannel;
-import com.ociweb.gl.api.RestListener;
-import com.ociweb.gl.api.Writable;
+import com.ociweb.gl.api.*;
 import com.ociweb.pronghorn.pipe.ChannelWriter;
 
 public class RestConsumer implements RestListener {
 
-    private GreenCommandChannel cmd2;
-    private HTTPRequestReader requestW;
+    private final GreenCommandChannel cmd2;
+    private final HTTPResponseService httpResponseService;
     private final long fieldA;
     private final long fieldB;
     private final long fieldC;
+
+    private HTTPRequestReader requestW;
+    private PubSubService pubSubService;
 
     private Writable w = new Writable() {
 
@@ -25,7 +23,7 @@ public class RestConsumer implements RestListener {
             writer.writePackedLong(requestW.getSequenceCode());
 
             // Write JSON data.
-//            writer.writeUTF8Text(requestW.structured().readText(fieldA));
+            writer.writeUTF(requestW.structured().readText(fieldA));
             writer.writeBoolean(requestW.structured().readBoolean(fieldB));
             writer.writeInt(requestW.structured().readInt(fieldC));
         }
@@ -33,8 +31,8 @@ public class RestConsumer implements RestListener {
     };
     public RestConsumer(GreenRuntime runtime, long fieldA, long fieldB, long fieldC) {
         this.cmd2 = runtime.newCommandChannel();
-        this.cmd2.ensureDynamicMessaging();
-        this.cmd2.ensureHTTPServerResponse();
+        httpResponseService = cmd2.newHTTPResponseService();
+        pubSubService = cmd2.newPubSubService();
         this.fieldA = fieldA;
         this.fieldB = fieldB;
         this.fieldC = fieldC;
@@ -45,10 +43,11 @@ public class RestConsumer implements RestListener {
     public boolean restRequest(final HTTPRequestReader request) {
 
         if (!( request.isVerbPost() || request.isVerbGet() )) {
-            cmd2.publishHTTPResponse(request, 404);
+            httpResponseService.publishHTTPResponse(request, 404);
         }
 
         requestW = request;
-        return cmd2.publishTopic("/send/200", w);
+
+        return pubSubService.publishTopic("/send/200", w);
     }
 }
