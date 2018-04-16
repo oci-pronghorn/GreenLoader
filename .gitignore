@@ -3,5 +3,5 @@ results*/
 .ipynb_checkpoints/
 .DS_Store
 .idea
-load-results.txt
+load-results*
 *.iml

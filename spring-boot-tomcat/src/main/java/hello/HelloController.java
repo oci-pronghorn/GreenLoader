@@ -26,7 +26,6 @@ public class HelloController {
 
         String responseString = response.toString();
         
-        return ResponseEntity.ok().contentLength(responseString.getBytes(StandardCharsets.UTF_8).length).body(
-                responseString);
+        return ResponseEntity.ok().contentLength(responseString.getBytes(StandardCharsets.UTF_8).length).body(responseString);
     }
 }

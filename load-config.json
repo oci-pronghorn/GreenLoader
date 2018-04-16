@@ -9,7 +9,14 @@
         },
         {
             "name": "Spring-Boot-Jetty",
-            "start": "java -jar spring-boot-jetty/target/gs-spring-boot-0.1.0.jar --server.port=3303",
+            "start": "java -jar spring-boot-jetty/target/gs-spring-boot-0.1.0.jar --server.port=3302",
+            "endpoint": "/hello",
+            "port": 3302,
+            "payload": {"name": "Rick", "happy": true, "age": 13}
+        },
+        {
+            "name": "Spring-Boot-Tomcat",
+            "start": "java -jar spring-boot-tomcat/target/gs-spring-boot-0.1.0.jar --server.port=3303",
             "endpoint": "/hello",
             "port": 3303,
             "payload": {"name": "Rick", "happy": true, "age": 13}
