@@ -33,8 +33,14 @@ public class GreenLoader {
 
     public static void main(String[] args) throws Exception {
 
+        // File name.
+        String fileName = "load-config.json";
+        if (args.length > 0) {
+            fileName = args[0];
+        }
+
         // Parse the load configuration.
-        JsonObject file = Json.parse(new InputStreamReader(new FileInputStream(new File("load-config.json")))).asObject();
+        JsonObject file = Json.parse(new InputStreamReader(new FileInputStream(new File(fileName)))).asObject();
         JsonArray config = file.get("services").asArray();
 
         // Print working directory.
@@ -64,6 +70,8 @@ public class GreenLoader {
                                                        serviceObject.getInt("port", -1),
                                                        serviceObject.getString("endpoint", null),
                                                        false);
+            loadTesterConfig.insecureClient = true;
+            loadTesterConfig.host = "127.0.0.1";
             loadTesterConfig.simultaneousRequestsPerTrackBits  = 0;
             loadTesterConfig.responseTimeoutNS = 0L;
             loadTesterConfig.cycleRate = CYCLE_RATE;
