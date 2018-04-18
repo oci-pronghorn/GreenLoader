@@ -23,17 +23,24 @@
         },
         {
             "name": "Green-Lightning-Telemetry",
-            "start": "java -jar green-lightning/target/gl-hello.jar true 3305",
+            "start": "java -jar green-lightning/target/gl-hello.jar true 3304",
+            "endpoint": "/hello",
+            "port": 3304,
+            "payload": {"name": "Rick", "happy": true, "age": 13}
+        },
+        {
+            "name": "Green-Lightning-No-Telemetry",
+            "start": "java -jar green-lightning/target/gl-hello.jar false 3305",
             "endpoint": "/hello",
             "port": 3305,
             "payload": {"name": "Rick", "happy": true, "age": 13}
         },
         {
-            "name": "Green-Lightning-No-Telemetry",
-            "start": "java -jar green-lightning/target/gl-hello.jar false 3306",
+            "name": "Micronaut",
+            "start": "java -Dmicronaut.server.host=127.0.0.1 -Dmicronaut.server.port=3306 -jar micronaut-app/build/libs/micronaut-all.jar",
             "endpoint": "/hello",
             "port": 3306,
-            "payload": {"name": "Rick", "happy": true, "age": 13}
+            
         },
         {
             "name": "Squall",

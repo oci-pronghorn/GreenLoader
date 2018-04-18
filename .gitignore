@@ -5,3 +5,5 @@ results*/
 .idea
 load-results*
 *.iml
+build/
+.gradle/
