@@ -73,7 +73,6 @@ public class GreenLoader {
             loadTesterConfig.insecureClient = true;
             loadTesterConfig.host = "127.0.0.1";
             loadTesterConfig.simultaneousRequestsPerTrackBits  = 0;
-            loadTesterConfig.responseTimeoutNS = 0L;
             loadTesterConfig.cycleRate = CYCLE_RATE;
 
             // Wait for service start.
