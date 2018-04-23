@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
+import java.net.Socket;
 
 /**
  * Automated load tester for various microservice frameworks using the Green
@@ -57,7 +58,9 @@ public class GreenLoader {
             logger.info("Beginning load test for: {}", serviceObject.getString("name", null));
 
             // Start the service.
+            logger.info("Starting service via {}", serviceObject.getString("start", null));
             Process process = Runtime.getRuntime().exec(serviceObject.getString("start", null));
+            long startTime = System.currentTimeMillis();
 
             // Configure payload.
             ParallelClientLoadTesterPayload loadTesterPayload
@@ -76,9 +79,30 @@ public class GreenLoader {
             loadTesterConfig.cycleRate = CYCLE_RATE;
 
             // Wait for service start.
-            logger.info("Starting service via {}", serviceObject.getString("start", null));
-            Thread.sleep(10_000);
-            logger.info("Started service via {}", serviceObject.getString("start", null));
+            logger.info("Waiting for service port to become available...");
+            while (true) {
+                Socket s = null;
+                try {
+                    s = new Socket(loadTesterConfig.host, loadTesterConfig.port);
+                    break;
+                } catch (Exception e) {
+                    // No port yet.
+                    try {
+                        Thread.sleep(1);
+                    } catch (InterruptedException e2) {
+                        e.printStackTrace();
+                    }
+                } finally {
+                    if (s != null) {
+                        try {
+                            s.close();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+            logger.info("Service port became available {}ms (+/- 1ms) after startup.", System.currentTimeMillis() - startTime);
 
             // Run load tester.
             logger.info("Starting load test against {}{} on port {}.", loadTesterConfig.host, loadTesterConfig.route, loadTesterConfig.port);
