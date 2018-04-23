@@ -1,0 +1,11 @@
+{
+    "services": [
+        {
+            "name": "Micronaut",
+            "start": "java -Dmicronaut.server.host=127.0.0.1 -Dmicronaut.server.port=3306 -jar micronaut-app/build/libs/micronaut-all.jar",
+            "endpoint": "/hello",
+            "port": 3306,
+            "payload": {"name": "Rick", "happy": true, "age": 13}
+        }
+    ]
+}

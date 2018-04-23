@@ -1,0 +1,11 @@
+{
+    "services": [
+        {
+            "name": "Node",
+            "start": "node node.js",
+            "endpoint": "/hello",
+            "port": 3301,
+            "payload": {"name": "Rick", "happy": true, "age": 13}
+        }
+    ]
+}

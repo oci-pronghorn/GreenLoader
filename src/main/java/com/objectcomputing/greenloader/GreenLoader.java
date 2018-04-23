@@ -71,7 +71,7 @@ public class GreenLoader {
                                                        serviceObject.getString("endpoint", null),
                                                        false);
             loadTesterConfig.insecureClient = true;
-            loadTesterConfig.host = "localhost";
+            loadTesterConfig.host = "127.0.0.1";
             loadTesterConfig.simultaneousRequestsPerTrackBits  = 0;
             loadTesterConfig.cycleRate = CYCLE_RATE;
 
