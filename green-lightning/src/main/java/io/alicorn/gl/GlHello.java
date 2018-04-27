@@ -33,8 +33,13 @@ public class GlHello implements GreenAppParallel {
 
     @Override
 	public void declareConfiguration(Builder builder) {
-		HTTPServerConfig conf = builder.useHTTP1xServer(port).setHost("127.0.0.1");
+		HTTPServerConfig conf = builder.useHTTP1xServer(port);
 
+		if (logging) {
+			conf.logTraffic();
+		}
+
+		conf.setHost("127.0.0.1");
 		conf.setConcurrentChannelsPerDecryptUnit(10);
 		conf.setConcurrentChannelsPerEncryptUnit(10);
 		builder.parallelTracks(4);
@@ -64,10 +69,6 @@ public class GlHello implements GreenAppParallel {
 		
 		if (telemtry) {
 			builder.enableTelemetry();
-		}
-
-		if (logging) {
-			builder.logTraffic();
 		}
 	}
 
