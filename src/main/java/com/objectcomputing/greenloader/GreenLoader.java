@@ -79,6 +79,7 @@ public class GreenLoader {
             loadTesterConfig.cycleRate = CYCLE_RATE;
 
             // Wait for service start.
+            /*
             logger.info("Waiting for service port to become available...");
             while (true) {
                 Socket s = null;
@@ -103,6 +104,12 @@ public class GreenLoader {
                 }
             }
             logger.info("Service port became available {}ms (+/- 1ms) after startup.", System.currentTimeMillis() - startTime);
+            */
+            try {
+                Thread.sleep(10_000);
+            } catch(InterruptedException e) {
+                e.printStackTrace();
+            }
 
             // Run load tester.
             logger.info("Starting load test against {}{} on port {}.", loadTesterConfig.host, loadTesterConfig.route, loadTesterConfig.port);
