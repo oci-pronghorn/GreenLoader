@@ -2,7 +2,7 @@
     "services": [
         {
             "name": "Green-Lightning-Telemetry",
-            "start": "java -jar green-lightning/target/gl-hello.jar true 3304",
+            "start": "java -jar green-lightning/target/gl-hello.jar true 3304 false",
             "endpoint": "/hello",
             "port": 3304,
             "payload": {"name": "Rick", "happy": true, "age": 13}

@@ -7,3 +7,4 @@ load-results*
 *.iml
 build/
 .gradle/
+*log.txt

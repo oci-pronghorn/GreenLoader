@@ -1,0 +1,11 @@
+{
+  "services": [
+    {
+      "name": "Green-Lightning-Logging",
+      "start": "java -jar green-lightning/target/gl-hello.jar false 3305 true",
+      "endpoint": "/hello",
+      "port": 3305,
+      "payload": {"name": "Rick", "happy": true, "age": 13}
+    }
+  ]
+}

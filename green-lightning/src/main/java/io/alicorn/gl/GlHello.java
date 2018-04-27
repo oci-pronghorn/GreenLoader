@@ -13,20 +13,22 @@ import com.ociweb.json.JSONType;
 
 public class GlHello implements GreenAppParallel {
     public static void main(String[] args) {
-        GreenRuntime.run(new GlHello(false, Integer.valueOf(args[1]), Boolean.valueOf(args[0])));
+        GreenRuntime.run(new GlHello(false, Integer.valueOf(args[1]), Boolean.valueOf(args[0]), Boolean.valueOf(args[2])));
     }
 
     private final int port;
 	private final boolean tls;
 	private final boolean telemtry;
+	private final boolean logging;
 
 	// Trackers for JSON.
 	private long name_a, name_b, name_c;
 	
-	public GlHello(boolean tls, int port, boolean telemtry) {
+	public GlHello(boolean tls, int port, boolean telemtry, boolean logging) {
 		this.tls = tls;
 		this.port = port;
 		this.telemtry = telemtry;
+		this.logging = logging;
 	}
 
     @Override
@@ -62,6 +64,10 @@ public class GlHello implements GreenAppParallel {
 		
 		if (telemtry) {
 			builder.enableTelemetry();
+		}
+
+		if (logging) {
+			builder.logTraffic();
 		}
 	}
 
