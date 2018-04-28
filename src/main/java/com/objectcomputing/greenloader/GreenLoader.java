@@ -16,6 +16,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.net.Socket;
+import java.nio.file.Paths;
+import java.util.StringTokenizer;
 
 /**
  * Automated load tester for various microservice frameworks using the Green
@@ -59,7 +61,17 @@ public class GreenLoader {
 
             // Start the service.
             logger.info("Starting service via {}", serviceObject.getString("start", null));
-            Process process = Runtime.getRuntime().exec(serviceObject.getString("start", null));
+            StringTokenizer st = new StringTokenizer(serviceObject.getString("start", null));
+            String[] cmdarray = new String[st.countTokens()];
+            for (int i = 0; st.hasMoreTokens(); i++)
+                cmdarray[i] = st.nextToken();
+            ProcessBuilder builder = new ProcessBuilder(cmdarray);
+            File outfile = Paths.get("greenloader-" + serviceObject.getString("name", null) + "-log.txt").toFile();
+            outfile.delete();
+            outfile.createNewFile();
+            builder.redirectErrorStream(true);
+            builder.redirectOutput(outfile);
+            Process process = builder.start();
             long startTime = System.currentTimeMillis();
 
             // Configure payload.
@@ -79,7 +91,6 @@ public class GreenLoader {
             loadTesterConfig.cycleRate = CYCLE_RATE;
 
             // Wait for service start.
-            /*
             logger.info("Waiting for service port to become available...");
             while (true) {
                 Socket s = null;
@@ -104,12 +115,6 @@ public class GreenLoader {
                 }
             }
             logger.info("Service port became available {}ms (+/- 1ms) after startup.", System.currentTimeMillis() - startTime);
-            */
-            try {
-                Thread.sleep(10_000);
-            } catch(InterruptedException e) {
-                e.printStackTrace();
-            }
 
             // Run load tester.
             logger.info("Starting load test against {}{} on port {}.", loadTesterConfig.host, loadTesterConfig.route, loadTesterConfig.port);

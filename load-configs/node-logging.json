@@ -1,0 +1,11 @@
+{
+  "services": [
+    {
+      "name": "Node-Logging",
+      "start": "node node-logging.js",
+      "endpoint": "/hello",
+      "port": 3308,
+      "payload": {"name": "Rick", "happy": true, "age": 13}
+    }
+  ]
+}

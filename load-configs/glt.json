@@ -1,8 +1,8 @@
 {
     "services": [
         {
-            "name": "Spring-Boot-Jetty",
-            "start": "java -jar spring-boot-jetty/target/gs-spring-boot-0.1.0.jar --server.port=3302",
+            "name": "Green-Lightning-Telemetry",
+            "start": "java -jar green-lightning/target/gl-hello.jar true 3302 false",
             "endpoint": "/hello",
             "port": 3302,
             "payload": {"name": "Rick", "happy": true, "age": 13}

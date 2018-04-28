@@ -4,7 +4,7 @@
             "name": "Squall",
             "start": "java -jar squall/target/squall-hello.jar",
             "endpoint": "/hello",
-            "port": 3307,
+            "port": 3309,
             "payload": {"name": "Rick", "happy": true, "age": 13}
         }
     ]

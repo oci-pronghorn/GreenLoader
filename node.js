@@ -18,6 +18,6 @@ http.createServer(function (req, res) {
     });
 
 // use port 8080 
-}).listen(3301); 
+}).listen(3307);
 
 console.log('Server running on port 3301.');
