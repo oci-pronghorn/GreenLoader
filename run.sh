@@ -19,7 +19,7 @@ java -Xms6g -jar target/green-loader.jar load-configs/glt.json
 java -Xms6g -jar target/green-loader.jar load-configs/gltl.json
 
 # Micronaut
-java -Xms6g -jar target/green-loader.jar micronaut.json
+java -Xms6g -jar target/green-loader.jar load-configs/micronaut.json
 
 # Squall
 # java -Xms6g -jar target/green-loader.jar squall.json
