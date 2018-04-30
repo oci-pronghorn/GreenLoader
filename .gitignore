@@ -8,3 +8,4 @@ load-results*
 build/
 .gradle/
 *-log.txt*
+node_modules/

@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Node.
+npm install morgan
+
 # Jetty
 cd spring-boot-jetty
 mvn clean package
