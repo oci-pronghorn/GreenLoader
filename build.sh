@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# The load tester.
+mvn clean package
+
 # Node.
 npm install morgan
 
@@ -24,6 +27,6 @@ cd micronaut-app
 cd ..
 
 # Squall
-cd squall
-mvn clean package
-cd ..
+# cd squall
+# mvn clean package
+# cd ..
