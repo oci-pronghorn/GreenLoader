@@ -30,9 +30,9 @@ public class GreenLoader {
     private static final Logger logger = LoggerFactory.getLogger(GreenLoader.class);
 
     // 10_000 = 8 minutes.
-    public static final int CYCLES_PER_TRACK = 100_000;
-    public static final long CYCLE_RATE = 1_200L;
-    public static final long DURATION = 60_000L;
+    public static final int CYCLES_PER_TRACK = 2_000_000;
+    public static final long CYCLE_RATE = 4_000L;
+    public static final long DURATION = 3*60*60_000L; //3 hrs is too long
 
     public static void main(String[] args) throws Exception {
 
@@ -89,7 +89,7 @@ public class GreenLoader {
             loadTesterConfig.host = "127.0.0.1";
             loadTesterConfig.simultaneousRequestsPerTrackBits  = 0;
             loadTesterConfig.cycleRate = CYCLE_RATE;
-
+            
             // Wait for service start.
             logger.info("Waiting for service port to become available...");
             while (true) {
