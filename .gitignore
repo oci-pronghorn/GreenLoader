@@ -9,3 +9,5 @@ build/
 .gradle/
 *-log.txt*
 node_modules/
+/.classpath
+/.project
