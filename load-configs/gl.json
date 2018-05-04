@@ -2,7 +2,7 @@
     "services": [
         {
             "name": "Green-Lightning",
-            "start": "java -jar green-lightning/target/gl-hello.jar false 3300 false",
+            "start": "java -Xms10g -XX:CMSInitiatingOccupancyFraction=98 -XX:+UseCMSInitiatingOccupancyOnly -XX:+UseThreadPriorities -XX:+UseNUMA -XX:+UnlockDiagnosticVMOptions -XX:ParGCCardsPerStrideChunk=32768 -jar green-lightning/target/gl-hello.jar false 3300 false",
             "endpoint": "/hello",
             "port": 3300,
             "payload": {"name": "Rick", "happy": true, "age": 13}

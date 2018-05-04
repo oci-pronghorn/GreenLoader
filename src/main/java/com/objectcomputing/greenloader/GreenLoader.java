@@ -30,9 +30,9 @@ public class GreenLoader {
     private static final Logger logger = LoggerFactory.getLogger(GreenLoader.class);
 
     // 10_000 = 8 minutes.
-    public static final int CYCLES_PER_TRACK = 100_000;
+    public static final int CYCLES_PER_TRACK = 2_000_000;
     public static final long CYCLE_RATE = 1_200L;
-    public static final long DURATION = 60_000L;
+    public static final long DURATION = 800_000L;
 
     public static void main(String[] args) throws Exception {
 

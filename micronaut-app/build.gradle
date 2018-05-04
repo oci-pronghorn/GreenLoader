@@ -8,7 +8,7 @@ mainClassName = "com.objectcomputing.micronaut.Application"
 
 jar {
     manifest {
-        attributes 'Main-Class': "example.Application"
+        attributes 'Main-Class': "com.objectcomputing.micronaut.Application"
     }
 }
 repositories {

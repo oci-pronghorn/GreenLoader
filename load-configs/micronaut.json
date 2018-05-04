@@ -2,7 +2,7 @@
     "services": [
         {
             "name": "Micronaut",
-            "start": "java -Dmicronaut.server.port=3306 -jar micronaut-app/build/libs/micronaut-all.jar",
+            "start": "java -Dmicronaut.server.port=3306 -XX:CMSInitiatingOccupancyFraction=98 -XX:+UseCMSInitiatingOccupancyOnly -XX:+UseThreadPriorities -XX:+UseNUMA -XX:+UnlockDiagnosticVMOptions -XX:ParGCCardsPerStrideChunk=32768 -jar micronaut-app/build/libs/micronaut-all.jar",
             "endpoint": "/hello",
             "port": 3306,
             "payload": {"name": "Rick", "happy": true, "age": 13}

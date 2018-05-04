@@ -2,7 +2,7 @@
     "services": [
         {
             "name": "Spring-Boot-Tomcat-Logging",
-            "start": "java -jar spring-boot-tomcat/target/gs-spring-boot-0.1.0.jar --server.port=3311 --logging.file=tomcat-log.txt --logging.level.org.springframework.web.filter.CommonsRequestLoggingFilter=DEBUG",
+            "start": "java -XX:CMSInitiatingOccupancyFraction=98 -XX:+UseCMSInitiatingOccupancyOnly -XX:+UseThreadPriorities -XX:+UseNUMA -XX:+UnlockDiagnosticVMOptions -XX:ParGCCardsPerStrideChunk=32768 -jar spring-boot-tomcat/target/gs-spring-boot-0.1.0.jar --server.port=3311 --logging.file=tomcat-log.txt --logging.level.org.springframework.web.filter.CommonsRequestLoggingFilter=DEBUG",
             "endpoint": "/hello",
             "port": 3311,
             "payload": {"name": "Rick", "happy": true, "age": 13}

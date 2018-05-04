@@ -13,17 +13,17 @@ morgan.token("reqBody", function (req, res) {
     return req.body;
 });
 
-morgan.token("resHeaders", function (req, res) {
-    return JSON.stringify(res.getHeaders());
-});
-
-morgan.token("resBody", function (req, res) {
-    return res.body;
-});
+//morgan.token("resHeaders", function (req, res) {
+//    return JSON.stringify(res.getHeaders());
+//});
+//
+//morgan.token("resBody", function (req, res) {
+//    return res.body;
+//});
 
 // Create logger.
 var accessLogStream = fs.createWriteStream(path.join(__dirname, 'node-log.txt'), {flags: 'a'})
-var logger = morgan('ReqHeaders :reqHeaders ReqBody :reqBody ResHeaders :resHeaders ResBody :resBody', {stream: accessLogStream});
+var logger = morgan('ReqHeaders :reqHeaders ReqBody :reqBody ResHeaders', {stream: accessLogStream});
 
 // create an http server to handle requests and response
 http.createServer(function (req, res) {

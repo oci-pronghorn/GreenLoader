@@ -36,7 +36,7 @@ public class GlHello implements GreenAppParallel {
 		HTTPServerConfig conf = builder.useHTTP1xServer(port);
 
 		if (logging) {
-			conf.logTraffic();
+			conf.logTraffic(false);
 		}
 
 		conf.setHost("127.0.0.1");
