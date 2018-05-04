@@ -13,14 +13,6 @@ morgan.token("reqBody", function (req, res) {
     return req.body;
 });
 
-//morgan.token("resHeaders", function (req, res) {
-//    return JSON.stringify(res.getHeaders());
-//});
-//
-//morgan.token("resBody", function (req, res) {
-//    return res.body;
-//});
-
 // Create logger.
 var accessLogStream = fs.createWriteStream(path.join(__dirname, 'node-log.txt'), {flags: 'a'})
 var logger = morgan('ReqHeaders :reqHeaders ReqBody :reqBody ResHeaders', {stream: accessLogStream});
@@ -44,5 +36,3 @@ http.createServer(function (req, res) {
        });
     });
 }).listen(3308);
-
-console.log('Server running on port 3301.');
