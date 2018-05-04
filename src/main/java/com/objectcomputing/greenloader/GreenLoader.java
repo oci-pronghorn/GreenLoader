@@ -31,8 +31,8 @@ public class GreenLoader {
 
     // 10_000 = 8 minutes.
     public static final int CYCLES_PER_TRACK = 2_000_000;
-    public static final long CYCLE_RATE = 1_200L;
-    public static final long DURATION = 800_000L;
+    public static final long CYCLE_RATE = 4_000L;
+    public static final long DURATION = 3*60*60_000L; //3 hrs is too long
 
     public static void main(String[] args) throws Exception {
 
