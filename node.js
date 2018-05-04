@@ -16,6 +16,4 @@ http.createServer(function (req, res) {
         var response = {"message": 'Hello, ' + json.name + '!', "happy": !json.happy, "age": json.age * 2};
         res.end(JSON.stringify(response)); 
     });
-
-// use port 8080 
 }).listen(3307);
