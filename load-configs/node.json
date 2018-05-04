@@ -1,7 +1,7 @@
 {
     "services": [
         {
-            "name": "Node",
+            "name": "Node-Express",
             "start": "node node.js 3307 false",
             "endpoint": "/hello",
             "port": 3307,

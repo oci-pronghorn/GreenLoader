@@ -1,7 +1,7 @@
 {
   "services": [
     {
-    "name": "Node-Logging",
+    "name": "Node-Express-Logging",
     "start": "node node.js 3308 true",
     "endpoint": "/hello",
     "port": 3308,
