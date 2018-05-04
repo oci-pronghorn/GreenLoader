@@ -4,6 +4,8 @@
 mvn clean package
 
 # Node.
+npm install body-parser
+npm install express
 npm install morgan
 
 # Jetty

@@ -2,7 +2,7 @@
     "services": [
         {
             "name": "Node",
-            "start": "node node.js",
+            "start": "node node.js 3307 false",
             "endpoint": "/hello",
             "port": 3307,
             "payload": {"name": "Rick", "happy": true, "age": 13}
