@@ -15,11 +15,20 @@ var ALTERNATE_ENDPOINTS_COUNT = 19;
 // Enable logging.
 if (ENABLE_LOGGING) {
 
+    // Add some tokens.	
+    morgan.token("reqHeaders", function (req, res) {	
+        return JSON.stringify(req.headers);	
+    });	
+    
+    morgan.token("reqBody", function (req, res) {	
+        return JSON.stringify(req.body);
+    });
+
     // Setup log file.
     var accessLogStream = fs.createWriteStream(path.join(__dirname, 'node-log.txt'), {flags: 'a'})
 
     // Enable Morgan.
-    app.use(morgan('ReqHeaders :reqHeaders ReqBody :reqBody ResHeaders', {stream: accessLogStream}));
+    app.use(morgan('ReqHeaders :reqHeaders ReqBody :reqBody', {stream: accessLogStream}));
 }
 
 // Enable JSON body parsing.
