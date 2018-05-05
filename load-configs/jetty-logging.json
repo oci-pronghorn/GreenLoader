@@ -2,7 +2,7 @@
     "services": [
         {
             "name": "Spring-Boot-Jetty-Logging",
-            "start": "java -jar -XX:CMSInitiatingOccupancyFraction=98 -XX:+UseCMSInitiatingOccupancyOnly -XX:+UseThreadPriorities -XX:+UseNUMA -XX:+UnlockDiagnosticVMOptions -XX:ParGCCardsPerStrideChunk=32768 spring-boot-jetty/target/gs-spring-boot-0.1.0.jar --server.port=3305 --logging.file=jetty-log.txt --logging.level.org.springframework.web.filter.CommonsRequestLoggingFilter=DEBUG",
+            "start": "java -jar -XX:CMSInitiatingOccupancyFraction=98 -XX:+UseCMSInitiatingOccupancyOnly -XX:+UseThreadPriorities -XX:+UseNUMA -XX:+UnlockDiagnosticVMOptions -XX:ParGCCardsPerStrideChunk=32768 spring-boot/target/spring-boot-jetty.jar --server.port=3305 --logging.file=jetty-log.txt --logging.level.org.springframework.web.filter.CommonsRequestLoggingFilter=DEBUG",
             "endpoint": "/hello",
             "port": 3305,
             "payload": {"name": "Rick", "happy": true, "age": 13}

@@ -8,14 +8,11 @@ npm install body-parser
 npm install express
 npm install morgan
 
-# Jetty
-cd spring-boot-jetty
-mvn clean package
-cd ..
-
-# Tomcat
-cd spring-boot-tomcat
-mvn clean package
+# Tomcat and Jetty
+cd spring-boot
+mvn clean
+mvn package -P tomcat
+mvn package -P jetty
 cd ..
 
 # Green Lightning
