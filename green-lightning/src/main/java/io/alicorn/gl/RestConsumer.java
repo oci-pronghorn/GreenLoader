@@ -42,7 +42,7 @@ public class RestConsumer implements RestListener {
     @Override
     public boolean restRequest(final HTTPRequestReader request) {
 
-        if (!( request.isVerbPost() || request.isVerbGet() )) {
+        if (!request.isVerbPost()) {
             httpResponseService.publishHTTPResponse(request, 404);
         }
 

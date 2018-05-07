@@ -1,12 +1,6 @@
 package io.alicorn.gl;
 
-import com.ociweb.gl.api.Builder;
-import com.ociweb.gl.api.GreenApp;
-import com.ociweb.gl.api.GreenAppParallel;
-import com.ociweb.gl.api.GreenCommandChannel;
-import com.ociweb.gl.api.GreenRuntime;
-import com.ociweb.gl.api.HTTPServerConfig;
-import com.ociweb.pronghorn.network.config.HTTPContentTypeDefaults;
+import com.ociweb.gl.api.*;
 import com.ociweb.json.JSONExtractor;
 import com.ociweb.json.JSONExtractorCompleted;
 import com.ociweb.json.JSONType;
@@ -23,6 +17,10 @@ public class GlHello implements GreenAppParallel {
 
 	// Trackers for JSON.
 	private long name_a, name_b, name_c;
+
+	// Route IDs.
+	private int primaryRoute;
+	private int alternateRoutes[] = new int[19];
 	
 	public GlHello(boolean tls, int port, boolean telemtry, boolean logging) {
 		this.tls = tls;
@@ -56,12 +54,12 @@ public class GlHello implements GreenAppParallel {
                         .newPath(JSONType.TypeInteger).key("age").completePath("name_c");
 
 		// Define route for receiving request.
-		int routeId = builder.defineRoute(extractor).path("/hello").routeId();
+		primaryRoute = builder.defineRoute(extractor).path("/hello").routeId();
 
 		// Extract JSON element IDs.
-        name_a = builder.lookupFieldByName(routeId, "name_a");
-        name_b = builder.lookupFieldByName(routeId, "name_b");
-        name_c = builder.lookupFieldByName(routeId, "name_c");
+        name_a = builder.lookupFieldByName(primaryRoute, "name_a");
+        name_b = builder.lookupFieldByName(primaryRoute, "name_b");
+        name_c = builder.lookupFieldByName(primaryRoute, "name_c");
 
 		// Define topic for publishing from the request receiver to the request responder.
         builder.definePrivateTopic(1 << 16, 100, "/send/200", "consumer", "responder");
@@ -69,6 +67,11 @@ public class GlHello implements GreenAppParallel {
 		
 		if (telemtry) {
 			builder.enableTelemetry();
+		}
+
+		// Define other routes.
+		for (int i = 0; i < alternateRoutes.length; i++) {
+			alternateRoutes[i] = builder.defineRoute().path("/hello" + i).routeId();
 		}
 	}
 
@@ -80,10 +83,14 @@ public class GlHello implements GreenAppParallel {
 
 	    // Add a consumer for handling the inbound REST requests.
         runtime.addRestListener("consumer", new RestConsumer(runtime, name_a, name_b, name_c))
-                .includeAllRoutes();
+				.includeRoutes(primaryRoute);
 
-        // Add a responder for handling all outbound REST responses.
+        // Add a responder for handling the outbound REST responses.
         runtime.addPubSubListener("responder", new RestResponder(runtime))
                 .addSubscription("/send/200");
+
+        // Add a consumer/responder for the alternate routes.
+		runtime.addRestListener("otherConsumer", new SimpleRestListener(runtime))
+				.includeRoutes(alternateRoutes);
 	}
 }
