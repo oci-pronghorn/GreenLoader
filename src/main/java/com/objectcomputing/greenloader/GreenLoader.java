@@ -30,16 +30,18 @@ public class GreenLoader {
     private static final Logger logger = LoggerFactory.getLogger(GreenLoader.class);
 
     // 10_000 = 8 minutes.
-    public static final int CYCLES_PER_TRACK = 2_000_000;
+    public static final int CYCLES_PER_TRACK = 2_000_000; // 2_000_000
     public static final long CYCLE_RATE = 4_000L;
-    public static final long DURATION = 3*60*60_000L; //3 hrs is too long
+    public static final long DURATION = 3 * 60 * 60_000L; // 3*60*60_000L
 
     public static void main(String[] args) throws Exception {
 
         // File name.
         String fileName = "load-config.json";
+        int bits = 0;
         if (args.length > 0) {
             fileName = args[0];
+            bits = Integer.parseInt(args[1]);
         }
 
         // Parse the load configuration.
@@ -55,18 +57,22 @@ public class GreenLoader {
             // Get the service as an object.
             JsonObject serviceObject = serviceValue.asObject();
 
+            // Get the service name. We append the number of bits in order to differentiate runs.
+            String fqnServiceName = serviceObject.getString("name", null) + "-" + String.valueOf(bits);
+
             // Begin load test.
             logger.info("===============================================================================");
-            logger.info("Beginning load test for: {}", serviceObject.getString("name", null));
+            logger.info("Beginning load test for: {}", fqnServiceName);
 
             // Start the service.
             logger.info("Starting service via {}", serviceObject.getString("start", null));
             StringTokenizer st = new StringTokenizer(serviceObject.getString("start", null));
             String[] cmdarray = new String[st.countTokens()];
-            for (int i = 0; st.hasMoreTokens(); i++)
+            for (int i = 0; st.hasMoreTokens(); i++) {
                 cmdarray[i] = st.nextToken();
+            }
             ProcessBuilder builder = new ProcessBuilder(cmdarray);
-            File outfile = Paths.get("greenloader-" + serviceObject.getString("name", null) + "-log.txt").toFile();
+            File outfile = Paths.get("greenloader-" + fqnServiceName + "-log.txt").toFile();
             outfile.delete();
             outfile.createNewFile();
             builder.redirectErrorStream(true);
@@ -87,7 +93,7 @@ public class GreenLoader {
                                                        false);
             loadTesterConfig.insecureClient = true;
             loadTesterConfig.host = "127.0.0.1";
-            loadTesterConfig.simultaneousRequestsPerTrackBits  = 0;
+            loadTesterConfig.simultaneousRequestsPerTrackBits = bits;
             loadTesterConfig.cycleRate = CYCLE_RATE;
 
             // Wait for service start.
@@ -114,10 +120,12 @@ public class GreenLoader {
                     }
                 }
             }
-            logger.info("Service port became available {}ms (+/- 1ms) after startup.", System.currentTimeMillis() - startTime);
+            logger.info("Service port became available {}ms (+/- 1ms) after startup.",
+                        System.currentTimeMillis() - startTime);
 
             // Run load tester.
-            logger.info("Starting load test against {}{} on port {}.", loadTesterConfig.host, loadTesterConfig.route, loadTesterConfig.port);
+            logger.info("Starting load test against {}{} on port {} with {} parallel bits.", 
+                        loadTesterConfig.host, loadTesterConfig.route, loadTesterConfig.port, bits);
             ParallelClientLoadTester tester = new ParallelClientLoadTester(loadTesterConfig, loadTesterPayload);
             GreenRuntime.testConcurrentUntilShutdownRequested(tester, DURATION);
             logger.info("Load test complete.");
