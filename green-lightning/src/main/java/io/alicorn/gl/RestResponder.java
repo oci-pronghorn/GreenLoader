@@ -13,7 +13,7 @@ public class RestResponder implements PubSubListener{
 
     private static final JSONRenderer<ChannelReader> jsonRenderer = new JSONRenderer<ChannelReader>()
             .beginObject()
-            .string("name", channelReader -> "Hey, " + channelReader.readUTF() + "!")
+            .string("message", channelReader -> "Hey, " + channelReader.readUTF() + "!")
             .bool("happy", channelReader -> !channelReader.readBoolean())
             .integer("age", channelReader -> channelReader.readInt() * 2)
             .endObject();
