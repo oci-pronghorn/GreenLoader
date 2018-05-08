@@ -14,10 +14,9 @@ public class HelloController {
 
     @Post("/hello")
     public Single<HttpResponse<JsonResponse>> hello(@Body Single<JsonRequest> jsonRequest) {
-        return jsonRequest.map(req -> {
-            JsonResponse response = new JsonResponse("Hello, " + req.getName() + "!", !req.isHappy(), req.getAge() * 2);
-            return HttpResponse.ok(response);
-        });
+        return jsonRequest.map(req ->
+            HttpResponse.created(new JsonResponse("Hello, " + req.getName() + "!", !req.isHappy(), req.getAge() * 2))
+        );
     }
 
     // Response to POST requests on other endpoints, too!
