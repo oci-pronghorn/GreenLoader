@@ -1,5 +1,6 @@
 package com.objectcomputing.greenloader;
 
+import com.ociweb.gl.api.Builder;
 import com.ociweb.gl.api.GreenRuntime;
 import com.ociweb.gl.test.ParallelClientLoadTester;
 import com.ociweb.gl.test.ParallelClientLoadTesterConfig;
@@ -9,6 +10,8 @@ import com.eclipsesource.json.Json;
 import com.eclipsesource.json.JsonArray;
 import com.eclipsesource.json.JsonObject;
 import com.eclipsesource.json.JsonValue;
+import com.ociweb.pronghorn.network.ClientSocketWriterStage;
+import com.ociweb.pronghorn.network.ServerSocketWriterStage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,6 +46,18 @@ public class GreenLoader {
             fileName = args[0];
             bits = Integer.parseInt(args[1]);
         }
+
+        // If there's a third arg, run in "quick" mode.
+        // This logs traffic and allows users to configure a short cycle rate for debugging.
+        int cycles = CYCLES_PER_TRACK;
+        boolean logTraffic = false;
+        if (args.length == 3) {
+            cycles = Integer.parseInt(args[2]);
+            logTraffic = true;
+        }
+
+        // Enable or disable traffic logging.
+        ClientSocketWriterStage.showWrites = logTraffic;
 
         // Parse the load configuration.
         JsonObject file = Json.parse(new InputStreamReader(new FileInputStream(new File(fileName)))).asObject();
@@ -87,7 +102,7 @@ public class GreenLoader {
             // Configure load tester.
             ParallelClientLoadTesterConfig loadTesterConfig =
                     new ParallelClientLoadTesterConfig(1,
-                                                       CYCLES_PER_TRACK,
+                                                       cycles,
                                                        serviceObject.getInt("port", -1),
                                                        serviceObject.getString("endpoint", null),
                                                        false);
