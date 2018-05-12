@@ -1,0 +1,11 @@
+{
+    "services": [
+        {
+            "name": "PHP",
+            "start": "apachectl -d php -f httpd.conf -e info -DFOREGROUND",
+            "endpoint": "/hello.php",
+            "port": 3313,
+            "payload": {"name": "Rick", "happy": true, "age": 13}
+        }
+    ]
+}

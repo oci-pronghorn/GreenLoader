@@ -1,7 +1,7 @@
 package io.alicorn.gl;
 
 import com.ociweb.gl.api.*;
-import com.ociweb.json.JSONExtractor;
+import com.ociweb.json.JSONExtractorImpl;
 import com.ociweb.json.JSONExtractorCompleted;
 import com.ociweb.json.JSONType;
 
@@ -48,7 +48,7 @@ public class GlHello implements GreenAppParallel {
 
 		// Define JSON extraction behavior.
         JSONExtractorCompleted extractor =
-                new JSONExtractor()
+                new JSONExtractorImpl()
                         .newPath(JSONType.TypeString).key("name").completePath("name_a")
                         .newPath(JSONType.TypeBoolean).key("happy").completePath("name_b")
                         .newPath(JSONType.TypeInteger).key("age").completePath("name_c");
