@@ -4,6 +4,7 @@ import com.ociweb.gl.api.*;
 import com.ociweb.json.JSONExtractorImpl;
 import com.ociweb.json.JSONExtractorCompleted;
 import com.ociweb.json.JSONType;
+import com.ociweb.pronghorn.network.HTTPServerConfig;
 
 public class GlHello implements GreenAppParallel {
     public static void main(String[] args) {
