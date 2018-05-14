@@ -21,6 +21,7 @@ import java.io.InputStreamReader;
 import java.net.Socket;
 import java.nio.file.Paths;
 import java.util.StringTokenizer;
+import java.util.Arrays;
 
 /**
  * Automated load tester for various microservice frameworks using the Green
@@ -80,12 +81,12 @@ public class GreenLoader {
             logger.info("Beginning load test for: {}", fqnServiceName);
 
             // Start the service.
-            logger.info("Starting service via {}", serviceObject.getString("start", null));
             StringTokenizer st = new StringTokenizer(serviceObject.getString("start", null));
             String[] cmdarray = new String[st.countTokens()];
             for (int i = 0; st.hasMoreTokens(); i++) {
                 cmdarray[i] = st.nextToken();
             }
+            logger.info("Starting service via command array {}", Arrays.toString(cmdarray));
             ProcessBuilder builder = new ProcessBuilder(cmdarray);
             File outfile = Paths.get("greenloader-" + fqnServiceName + "-log.txt").toFile();
             outfile.delete();

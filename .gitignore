@@ -12,3 +12,7 @@ build/
 node_modules/
 /.classpath
 /.project
+php/logs/*
+!php/logs/locker
+php/tmp/*
+!php/tmp/locker

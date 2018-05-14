@@ -2,7 +2,7 @@
     "services": [
         {
             "name": "PHP",
-            "start": "apachectl -d php -f httpd.conf -e info -DFOREGROUND",
+            "start": "bash start-apache-php.sh",
             "endpoint": "/hello.php",
             "port": 3313,
             "payload": {"name": "Rick", "happy": true, "age": 13}
