@@ -1,0 +1,11 @@
+{
+    "services": [
+        {
+            "name": "Spring-Webflux-Netty",
+            "start": "java -XX:CMSInitiatingOccupancyFraction=98 -XX:+UseCMSInitiatingOccupancyOnly -XX:+UseThreadPriorities -XX:+UseNUMA -XX:+UnlockDiagnosticVMOptions -XX:ParGCCardsPerStrideChunk=32768 -jar spring-webflux/target/spring-webflux.jar --server.port=3315",
+            "endpoint": "/hello",
+            "port": 3315,
+            "payload": {"name": "Rick", "happy": true, "age": 13}
+        }
+    ]
+}

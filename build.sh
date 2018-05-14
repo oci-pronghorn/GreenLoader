@@ -15,6 +15,11 @@ mvn package -P tomcat
 mvn package -P jetty
 cd ..
 
+# Netty.
+cd spring-webflux
+mvn clean package
+cd ..
+
 # Green Lightning
 cd green-lightning
 mvn clean package
