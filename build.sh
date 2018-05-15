@@ -30,6 +30,11 @@ cd micronaut-app
 ./gradlew clean shadowJar
 cd ..
 
+# Play!
+cd play
+mvn clean package
+cd ..
+
 # Squall
 # cd squall
 # mvn clean package

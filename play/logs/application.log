@@ -1,0 +1,2 @@
+2018-05-15 18:45:38,618 [INFO] from play.api.Play in main - Application started (Prod)
+2018-05-15 18:45:38,832 [INFO] from play.core.server.NettyServer in main - Listening for HTTP on /0:0:0:0:0:0:0:0:9000
