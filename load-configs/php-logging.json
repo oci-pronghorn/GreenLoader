@@ -1,0 +1,11 @@
+{
+    "services": [
+        {
+            "name": "PHP",
+            "start": "bash start-apache-php-logging.sh",
+            "endpoint": "/hello.php",
+            "port": 3314,
+            "payload": {"name": "Rick", "happy": true, "age": 13}
+        }
+    ]
+}
