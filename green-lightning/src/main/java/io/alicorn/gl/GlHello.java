@@ -50,9 +50,9 @@ public class GlHello implements GreenAppParallel {
 		// Define JSON extraction behavior.
         JSONExtractorCompleted extractor =
                 new JSONExtractorImpl()
-                        .newPath(JSONType.TypeString).key("name").completePath("name_a")
-                        .newPath(JSONType.TypeBoolean).key("happy").completePath("name_b")
-                        .newPath(JSONType.TypeInteger).key("age").completePath("name_c");
+                        .newPath(JSONType.TypeString).completePath("name", "name_a")
+                        .newPath(JSONType.TypeBoolean).completePath("happy", "name_b")
+                        .newPath(JSONType.TypeInteger).completePath("age", "name_c");
 
 		// Define route for receiving request.
 		primaryRoute = builder.defineRoute(extractor).path("/hello").routeId();
