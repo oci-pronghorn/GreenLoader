@@ -27,7 +27,10 @@ for BITS in 0 2 4 6 8 10; do
     java -Xms10g -jar target/green-loader.jar load-configs/php-logging.json $BITS
     
     # Micronaut
-    # java -Xms10g -jar target/green-loader.jar load-configs/micronaut.json
+    java -Xms10g -jar target/green-loader.jar load-configs/micronaut.json
+
+    # Play!
+    java -Xms10g -jar target/green-loader.jar load-configs/play.json
     
     # Squall
     # java -Xms6g -jar target/green-loader.jar squall.json

@@ -32,7 +32,7 @@ cd ..
 
 # Play!
 cd play
-mvn clean package
+mvn clean package play2:dist-exploded
 cd ..
 
 # Squall

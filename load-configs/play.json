@@ -1,0 +1,11 @@
+{
+    "services": [
+        {
+            "name": "PHP",
+            "start": "sh play/target/dist/play-1.0-SNAPSHOT/start -Dhttp.port=3315",
+            "endpoint": "/hello",
+            "port": 3315,
+            "payload": {"name": "Rick", "happy": true, "age": 13}
+        }
+    ]
+}

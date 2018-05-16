@@ -16,3 +16,4 @@ php/logs/*
 !php/logs/locker
 php/tmp/*
 !php/tmp/locker
+play/logs/*
