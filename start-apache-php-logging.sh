@@ -4,7 +4,11 @@
 rm -rf php/logs/error_log
 
 # Kill existing processes.
-sudo killall httpd &> /dev/null
+apachectl -d php -f httpd.conf -k graceful-stop
 
 # Start test.
 apachectl -d php -f httpd.conf -e info -D FOREGROUND -c 'Listen 3314' -D Logging
+
+# Dodododod
+echo "Hi!"
+echo "Hihihihihihihhi"
