@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Prevent SIGTERM from ending process.
-trap "echo Service attempted a SIGTERM." SIGTERM
+# Prevent SIGTERM from ending execution of tests.
+trap "echo Service attempted a SIGTERM." SIGTERM SIGKILL
 
 for BITS in 0 2 4 6 8 10; do
     # Node
@@ -20,10 +20,11 @@ for BITS in 0 2 4 6 8 10; do
     java -Xms10g -jar target/green-loader.jar load-configs/netty.json $BITS
 
     # Pronghorn
-    java -Xms10g -jar target/green-loader.jar load-configs/ph.json $BITS
-    java -Xms10g -jar target/green-loader.jar load-configs/phl.json $BITS
-    java -Xms10g -jar target/green-loader.jar load-configs/pht.json $BITS
-    java -Xms10g -jar target/green-loader.jar load-configs/phlt.json $BITS
+    # TODO: Re-enable when Pronghorn app is fixed.
+    # java -Xms10g -jar target/green-loader.jar load-configs/ph.json $BITS
+    # java -Xms10g -jar target/green-loader.jar load-configs/phl.json $BITS
+    # java -Xms10g -jar target/green-loader.jar load-configs/pht.json $BITS
+    # java -Xms10g -jar target/green-loader.jar load-configs/phlt.json $BITS
     
     # Green Lightning
     java -Xms10g -jar target/green-loader.jar load-configs/gl.json $BITS
