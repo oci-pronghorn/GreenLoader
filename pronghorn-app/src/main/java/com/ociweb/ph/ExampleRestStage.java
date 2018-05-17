@@ -14,8 +14,8 @@ import com.ociweb.pronghorn.stage.scheduling.GraphManager;
 public class ExampleRestStage extends PronghornStage {
 
 	private static final int READ_SIZE = Pipe.sizeOf(HTTPRequestSchema.instance, HTTPRequestSchema.MSG_RESTREQUEST_300);
-	private final Pipe<HTTPRequestSchema>[] inputPipes;
-	private final Pipe<ServerResponseSchema>[] outputPipes; 
+	private final Pipe<HTTPRequestSchema> input;
+	private final Pipe<ServerResponseSchema> output; 
 	
     private static final JSONRenderer<StructuredReader> jsonRenderer = new JSONRenderer<StructuredReader>()
             .beginObject()
@@ -25,32 +25,28 @@ public class ExampleRestStage extends PronghornStage {
             .endObject();
 	
 	public static ExampleRestStage newInstance(GraphManager graphManager, 
-			Pipe<HTTPRequestSchema>[] inputPipes,
-			Pipe<ServerResponseSchema>[] outputPipe, 
+			Pipe<HTTPRequestSchema> inputPipes,
+			Pipe<ServerResponseSchema> outputPipe, 
 			HTTPSpecification httpSpec) {
 		return new ExampleRestStage(graphManager, inputPipes, outputPipe, httpSpec);
 	}
 	
 	public ExampleRestStage(GraphManager graphManager, 
-			Pipe<HTTPRequestSchema>[] inputPipes,
-			Pipe<ServerResponseSchema>[] outputPipes, 
+			Pipe<HTTPRequestSchema> inputPipes,
+			Pipe<ServerResponseSchema> outputPipes, 
 			HTTPSpecification httpSpec) {
 		
 		super(graphManager, inputPipes, outputPipes);
-		assert(inputPipes.length == outputPipes.length);
 		
-		this.inputPipes = inputPipes;
-		this.outputPipes = outputPipes;
+		this.input = inputPipes;
+		this.output = outputPipes;
 		
 	}
 
 	@Override
 	public void run() {
+		process(input, output);
 
-		int i = inputPipes.length;
-		while (--i>=0) {
-			process(inputPipes[i], outputPipes[i]);
-		}
 	}
 
 	private void process(Pipe<HTTPRequestSchema> input, Pipe<ServerResponseSchema> output) {

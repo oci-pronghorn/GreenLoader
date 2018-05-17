@@ -94,10 +94,13 @@ public class PHWebServer  {
 				Pipe<ServerResponseSchema>[] responses = Pipe.buildPipes(inputPipes.length, 
 						 ServerResponseSchema.instance.newPipeConfig(2, 1<<9));
 					
-				ExampleRestStage.newInstance(
-						graphManager, inputPipes, responses, 
-						routerConfig.httpSpec()
-						);
+				int i = inputPipes.length;
+				while (--i>=0) {
+					ExampleRestStage.newInstance(
+							graphManager, inputPipes[i], responses[i], 
+							routerConfig.httpSpec()
+							);
+				}
 	
 				JSONExtractorCompleted extractor =
 						new JSONExtractor()
