@@ -12,8 +12,8 @@ public class RestResponder implements PubSubListener{
     private final HTTPResponseService httpResponseService;
 
     private static final JSONRenderer<ChannelReader> jsonRenderer = new JSONRenderer<ChannelReader>()
-            .beginObject().
-            .string("message", (channelReader,target) ->  channelReader.readUTF(target.append("Hey, ")).append("!");
+            .beginObject()
+            .string("message", (channelReader,target) ->  channelReader.readUTF(target.append("Hey, ")).append("!"))
             .bool("happy", channelReader -> !channelReader.readBoolean())
             .integer("age", channelReader -> channelReader.readInt() * 2)
             .endObject();
