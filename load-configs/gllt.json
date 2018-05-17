@@ -1,7 +1,7 @@
 {
   "services": [
     {
-      "name": "Green-Lightning-Telemetry-Logging",
+      "name": "Green-Lightning-Logging-Telemetry",
       "start": "java -Xms10g -XX:CMSInitiatingOccupancyFraction=98 -XX:+UseCMSInitiatingOccupancyOnly -XX:+UseThreadPriorities -XX:+UseNUMA -XX:+UnlockDiagnosticVMOptions -XX:ParGCCardsPerStrideChunk=32768 -jar green-lightning/target/gl-hello.jar true 3303 true",
       "endpoint": "/hello",
       "port": 3303,

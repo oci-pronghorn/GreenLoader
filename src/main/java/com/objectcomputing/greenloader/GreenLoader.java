@@ -1,6 +1,5 @@
 package com.objectcomputing.greenloader;
 
-import com.ociweb.gl.api.Builder;
 import com.ociweb.gl.api.GreenRuntime;
 import com.ociweb.gl.test.ParallelClientLoadTester;
 import com.ociweb.gl.test.ParallelClientLoadTesterConfig;
@@ -11,7 +10,6 @@ import com.eclipsesource.json.JsonArray;
 import com.eclipsesource.json.JsonObject;
 import com.eclipsesource.json.JsonValue;
 import com.ociweb.pronghorn.network.ClientSocketWriterStage;
-import com.ociweb.pronghorn.network.ServerSocketWriterStage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

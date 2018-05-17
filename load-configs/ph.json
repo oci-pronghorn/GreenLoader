@@ -1,0 +1,11 @@
+{
+    "services": [
+        {
+            "name": "Pronghorn",
+            "start": "java -Xms10g -XX:CMSInitiatingOccupancyFraction=98 -XX:+UseCMSInitiatingOccupancyOnly -XX:+UseThreadPriorities -XX:+UseNUMA -XX:+UnlockDiagnosticVMOptions -XX:ParGCCardsPerStrideChunk=32768 -jar pronghorn-app/target/uberPHWebServer.jar 3317 false false false",
+            "endpoint": "/hello",
+            "port": 3317,
+            "payload": {"name": "Rick", "happy": true, "age": 13}
+        }
+    ]
+}

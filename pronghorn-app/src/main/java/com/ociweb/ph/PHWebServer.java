@@ -31,8 +31,13 @@ public class PHWebServer  {
 
 	
 	public static void main(String[] args) {
+
+        int port = Integer.parseInt(args[0]);
+        boolean logging = Boolean.parseBoolean(args[1]);
+        boolean telemetry = Boolean.parseBoolean(args[2]);
+        boolean tls = Boolean.parseBoolean(args[3]);
 		
-		new PHWebServer(true, 8088, true, true);
+		new PHWebServer(tls, port, telemetry, logging);
 	}
 	
 	public PHWebServer(boolean tls, int port, boolean telemtry, boolean logging) {

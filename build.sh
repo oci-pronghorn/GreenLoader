@@ -20,6 +20,11 @@ cd spring-webflux
 mvn clean package
 cd ..
 
+# Pronghorn
+cd pronghorn-app
+mvn clean package
+cd ..
+
 # Green Lightning
 cd green-lightning
 mvn clean package
