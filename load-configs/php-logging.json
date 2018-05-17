@@ -1,8 +1,8 @@
 {
     "services": [
         {
-            "name": "PHP",
-            "start": "bash start-apache-php-logging.sh",
+            "name": "PHP-Logging",
+            "start": "httpd -dphp -fhttpd.conf -DFOREGROUND -DLogging",
             "endpoint": "/hello.php",
             "port": 3314,
             "payload": {"name": "Rick", "happy": true, "age": 13}

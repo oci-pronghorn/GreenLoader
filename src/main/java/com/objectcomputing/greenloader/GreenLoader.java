@@ -149,6 +149,11 @@ public class GreenLoader {
             // Stop service.
             logger.info("Stopping service.");
             process.destroy();
+            try {
+                process.waitFor();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
 
         // Quit.
