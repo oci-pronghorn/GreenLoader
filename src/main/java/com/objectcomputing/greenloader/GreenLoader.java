@@ -1,5 +1,6 @@
 package com.objectcomputing.greenloader;
 
+import com.ociweb.gl.api.ArgumentParser;
 import com.ociweb.gl.api.GreenRuntime;
 import com.ociweb.gl.test.ParallelClientLoadTester;
 import com.ociweb.gl.test.ParallelClientLoadTesterConfig;
@@ -38,22 +39,13 @@ public class GreenLoader {
 
     public static void main(String[] args) throws Exception {
 
-        // File name.
-        String fileName = "load-config.json";
-        int bits = 0;
-        if (args.length > 0) {
-            fileName = args[0];
-            bits = Integer.parseInt(args[1]);
-        }
-
-        // If there's a third arg, run in "quick" mode.
-        // This logs traffic and allows users to configure a short cycle rate for debugging.
-        int cycles = CYCLES_PER_TRACK;
-        boolean logTraffic = false;
-        if (args.length == 3) {
-            cycles = Integer.parseInt(args[2]);
-            logTraffic = true;
-        }
+        // Parse arguments.
+        ArgumentParser arguments = new ArgumentParser(args);
+        final String fileName = arguments.getArgumentValue("--file", "-f", "load-config.json");
+        final int bits = arguments.getArgumentValue("--bits", "-b", 0);
+        final int tracks = arguments.getArgumentValue("--tracks", "-t", 1);
+        final int cycles = arguments.getArgumentValue("--cycles", "-c", CYCLES_PER_TRACK);
+        final boolean logTraffic = arguments.getArgumentValue("--log", "-l", false);
 
         // Enable or disable traffic logging.
         ClientSocketWriterStage.showWrites = logTraffic;
@@ -100,7 +92,7 @@ public class GreenLoader {
 
             // Configure load tester.
             ParallelClientLoadTesterConfig loadTesterConfig =
-                    new ParallelClientLoadTesterConfig(1,
+                    new ParallelClientLoadTesterConfig(tracks,
                                                        cycles,
                                                        serviceObject.getInt("port", -1),
                                                        serviceObject.getString("endpoint", null),
