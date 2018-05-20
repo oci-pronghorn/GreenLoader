@@ -2,7 +2,6 @@ package com.ociweb.ph;
 
 import com.ociweb.json.JSONAccumRule;
 import com.ociweb.json.JSONExtractorCompleted;
-import com.ociweb.json.JSONExtractorImpl;
 import com.ociweb.json.JSONType;
 import com.ociweb.json.decode.JSONExtractor;
 import com.ociweb.pronghorn.network.DummyRestStage;
@@ -18,40 +17,33 @@ import com.ociweb.pronghorn.network.schema.NetPayloadSchema;
 import com.ociweb.pronghorn.network.schema.ReleaseSchema;
 import com.ociweb.pronghorn.network.schema.ServerResponseSchema;
 import com.ociweb.pronghorn.pipe.Pipe;
-import com.ociweb.pronghorn.pipe.RawDataSchema;
-import com.ociweb.pronghorn.stage.file.FileBlobReadStage;
-import com.ociweb.pronghorn.stage.route.ReplicatorStage;
 import com.ociweb.pronghorn.stage.scheduling.GraphManager;
 import com.ociweb.pronghorn.stage.scheduling.StageScheduler;
-import com.ociweb.pronghorn.stage.test.ConsoleJSONDumpStage;
-import com.ociweb.pronghorn.stage.test.PipeCleanerStage;
-import com.ociweb.pronghorn.util.MainArgs;
 
 public class PHWebServer  {
 
+	public StageScheduler defaultScheduler;
 	
 	public static void main(String[] args) {
-
-        int port = Integer.parseInt(args[0]);
-        boolean logging = Boolean.parseBoolean(args[1]);
-        boolean telemetry = Boolean.parseBoolean(args[2]);
-        boolean tls = Boolean.parseBoolean(args[3]);
 		
-		new PHWebServer(tls, port, telemetry, logging);
+		boolean tls = false;
+		new PHWebServer(tls, 8088, true, true);
 	}
 	
-	public PHWebServer(boolean tls, int port, boolean telemtry, boolean logging) {
+	public PHWebServer(boolean tls, int port, boolean telemetry, boolean logging) {
 
 		GraphManager gm = new GraphManager();		
 		HTTPServerConfig serverConfig = NetGraphBuilder.serverConfig(port, gm);
-		
+
 		//show all these
 		serverConfig.setConcurrentChannelsPerDecryptUnit(10);
 		serverConfig.setConcurrentChannelsPerEncryptUnit(10);
-		serverConfig.setTracks(4);
+		serverConfig.setTracks(4); //fewer tracks lowers latency..
 		serverConfig.setHost("127.0.0.1");
 		
-		serverConfig.logTraffic(logging);
+		if (logging) {
+			serverConfig.logTraffic(false);
+		}
 		
 		if (!tls) {
 			serverConfig.useInsecureServer();
@@ -73,10 +65,12 @@ public class PHWebServer  {
 		
 		});		
 		
-		if (telemtry) {
+		if (telemetry) {
 			gm.enableTelemetry(8089);
 		}
-		StageScheduler.defaultScheduler(gm).startup();
+		
+		defaultScheduler = StageScheduler.defaultScheduler(gm);
+		defaultScheduler.startup();
 		
 	}
 
@@ -102,7 +96,9 @@ public class PHWebServer  {
 				int i = inputPipes.length;
 				while (--i>=0) {
 					ExampleRestStage.newInstance(
-							graphManager, inputPipes[i], responses[i], 
+							graphManager, 
+							inputPipes[i], 
+							responses[i], 
 							routerConfig.httpSpec()
 							);
 				}
@@ -138,7 +134,7 @@ public class PHWebServer  {
 				int i = 19;
 				while (--i>=0) {
 					registerCompositeRoute.path("/hello"+moduleInstance);//add all these paths.
-				};
+				}
 				registerCompositeRoute.routeId(Routes.others);
 				return responses;
 			}
