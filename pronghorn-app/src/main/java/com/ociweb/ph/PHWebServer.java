@@ -25,9 +25,15 @@ public class PHWebServer  {
 	public StageScheduler defaultScheduler;
 	
 	public static void main(String[] args) {
-		
-		boolean tls = false;
-		new PHWebServer(tls, 8088, true, true);
+
+		// Parse args from command line.
+		int port = Integer.parseInt(args[0]);
+		boolean logging = Boolean.parseBoolean(args[1]);
+		boolean telemetry = Boolean.parseBoolean(args[2]);
+		boolean tls = Boolean.parseBoolean(args[3]);
+
+		// Start webserver.
+		new PHWebServer(tls, port, telemetry, logging);
 	}
 	
 	public PHWebServer(boolean tls, int port, boolean telemetry, boolean logging) {

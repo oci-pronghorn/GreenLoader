@@ -64,7 +64,9 @@ public class GreenLoader {
             JsonObject serviceObject = serviceValue.asObject();
 
             // Get the service name. We append the number of bits in order to differentiate runs.
-            String fqnServiceName = serviceObject.getString("name", null) + "-" + String.valueOf(bits);
+            String fqnServiceName = serviceObject.getString("name", null) +
+                    "-b" + String.valueOf(bits) +
+                    "-t" + String.valueOf(tracks);
 
             // Begin load test.
             logger.info("===============================================================================");

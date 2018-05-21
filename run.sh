@@ -44,5 +44,5 @@ for BITS in 0 2 4 6 8 10; do
 
     # Play!
     java -Xms10g -jar target/green-loader.jar -f load-configs/play.json -b $BITS
-   
+
 done
