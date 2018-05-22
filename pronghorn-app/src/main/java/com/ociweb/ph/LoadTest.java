@@ -22,13 +22,13 @@ public class LoadTest {
 				= new ParallelClientLoadTesterPayload("{\"name\":\"nathan\",\"happy\":true,\"age\":42}");
 
 		int cyclesPerTrack = 300_000; //*(1+99_9999);// / 10;
-		int parallelTracks = 1;
+		int parallelTracks = 16;
 
 		ParallelClientLoadTesterConfig config2 =
 				new ParallelClientLoadTesterConfig(parallelTracks, cyclesPerTrack, 8088, "/hello", telemetry);
 
 		//TODO: the pipes between private topics may not be large enough for this...
-		config2.simultaneousRequestsPerTrackBits  = 0; // 126k for max volume
+		config2.simultaneousRequestsPerTrackBits  = 4; // 126k for max volume
 		config2.warmup = 3000;
 
 		GreenRuntime.testConcurrentUntilShutdownRequested(
