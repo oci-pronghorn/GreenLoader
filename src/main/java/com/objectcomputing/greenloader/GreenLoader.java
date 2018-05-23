@@ -80,7 +80,8 @@ public class GreenLoader {
             }
             logger.info("Starting service via command array {}", Arrays.toString(cmdarray));
             ProcessBuilder builder = new ProcessBuilder(cmdarray);
-            File outfile = Paths.get("greenloader-" + fqnServiceName + "-log.txt").toFile();
+            File outfile = Paths.get("logs", "greenloader-" + fqnServiceName + "-log.txt").toFile();
+            outfile.getParentFile().mkdirs();
             outfile.delete();
             outfile.createNewFile();
             builder.redirectErrorStream(true);
