@@ -1,7 +1,6 @@
 package com.ociweb.ph;
 
 import com.ociweb.json.encode.JSONRenderer;
-import com.ociweb.pronghorn.network.OrderSupervisorStage;
 import com.ociweb.pronghorn.network.config.HTTPContentType;
 import com.ociweb.pronghorn.network.config.HTTPContentTypeDefaults;
 import com.ociweb.pronghorn.network.config.HTTPHeader;
@@ -9,17 +8,13 @@ import com.ociweb.pronghorn.network.config.HTTPRevision;
 import com.ociweb.pronghorn.network.config.HTTPSpecification;
 import com.ociweb.pronghorn.network.config.HTTPVerb;
 import com.ociweb.pronghorn.network.config.HTTPVerbDefaults;
-import com.ociweb.pronghorn.network.http.HTTPUtil;
 import com.ociweb.pronghorn.network.module.AbstractAppendablePayloadResponseStage;
 import com.ociweb.pronghorn.network.schema.HTTPRequestSchema;
 import com.ociweb.pronghorn.network.schema.ServerResponseSchema;
 import com.ociweb.pronghorn.pipe.ChannelReader;
-import com.ociweb.pronghorn.pipe.DataInputBlobReader;
 import com.ociweb.pronghorn.pipe.Pipe;
 import com.ociweb.pronghorn.pipe.StructuredReader;
-import com.ociweb.pronghorn.stage.PronghornStage;
 import com.ociweb.pronghorn.stage.scheduling.GraphManager;
-import com.ociweb.pronghorn.util.AppendableBuilder;
 import com.ociweb.pronghorn.util.AppendableByteWriter;
 
 public class ExampleRestStage<      T extends Enum<T> & HTTPContentType,
@@ -54,11 +49,6 @@ public class ExampleRestStage<      T extends Enum<T> & HTTPContentType,
 	}
 
 	@Override
-	protected byte[] contentType() {
-		return HTTPContentTypeDefaults.JSON.getBytes();
-	}
-
-	@Override
 	protected boolean payload(AppendableByteWriter<?> payload, GraphManager gm, 
 			                 ChannelReader params, HTTPVerbDefaults verb) {	
 		//TODO: just hangs if we do not have a pipe long enugh?
@@ -66,4 +56,8 @@ public class ExampleRestStage<      T extends Enum<T> & HTTPContentType,
 		return true;
 	}
 
+	@Override
+	public HTTPContentType contentType() {
+		return HTTPContentTypeDefaults.JSON;
+	}
 }
