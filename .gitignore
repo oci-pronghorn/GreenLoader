@@ -1,6 +1,7 @@
 target/
 results*
 results*/
+results/
 .ipynb_checkpoints/
 .DS_Store
 .idea
