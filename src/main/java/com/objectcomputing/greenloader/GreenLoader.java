@@ -32,10 +32,11 @@ public class GreenLoader {
 
     private static final Logger logger = LoggerFactory.getLogger(GreenLoader.class);
 
-    // 10_000 = 8 minutes.
-    public static final int CYCLES_PER_TRACK = 2_000_000; // 2_000_000
+    public static final int CYCLES_PER_TRACK = 2_000_000;
     public static final long CYCLE_RATE = 4_000L;
-    public static final long DURATION = 3 * 60 * 60_000L; // 3*60*60_000L
+
+    // 20 minute maximum test duration.
+    public static final long DURATION = (1_000 * 60) * 20;
 
     public static void main(String[] args) throws Exception {
 
