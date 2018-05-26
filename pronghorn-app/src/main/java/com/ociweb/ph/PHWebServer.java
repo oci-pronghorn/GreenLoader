@@ -46,8 +46,6 @@ public class PHWebServer  {
 		serverConfig.setConcurrentChannelsPerEncryptUnit(10);
 		serverConfig.setTracks(4); //fewer tracks lowers latency..
 		serverConfig.setHost("127.0.0.1");
-		//reduce memory consumed
-		serverConfig.setMaxRequestSize(1<<8);
 		
 		if (logging) {
 			serverConfig.logTraffic(false);
