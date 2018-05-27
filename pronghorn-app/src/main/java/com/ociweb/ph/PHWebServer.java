@@ -47,7 +47,7 @@ public class PHWebServer  {
 		serverConfig.setTracks(4); //fewer tracks lowers latency..
 		serverConfig.setHost("127.0.0.1");
 		//reduce memory consumed
-		serverConfig.setMaxRequestSize(1<<8);
+		serverConfig.setMaxRequestSize(1<<17);//split out by 1.5K
 		
 		if (logging) {
 			serverConfig.logTraffic(false);
@@ -99,8 +99,8 @@ public class PHWebServer  {
 			
 			if (0==moduleInstance) {
 				Pipe<ServerResponseSchema>[] responses = Pipe.buildPipes(inputPipes.length, 
-						 ServerResponseSchema.instance.newPipeConfig(2, 1<<9));
-					
+						 ServerResponseSchema.instance.newPipeConfig(1<<12, 1<<9));
+				
 				int i = inputPipes.length;
 				while (--i>=0) {
 					ExampleRestStage.newInstance(
