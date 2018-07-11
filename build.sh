@@ -31,9 +31,10 @@ mvn clean package
 cd ..
 
 # Micronaut
-cd micronaut-app
-./gradlew clean shadowJar
-cd ..
+# Note: Disabled for now.
+# cd micronaut-app
+# ./gradlew clean shadowJar
+# cd ..
 
 # Play!
 cd play
