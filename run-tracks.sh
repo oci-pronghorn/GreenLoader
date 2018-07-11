@@ -39,7 +39,8 @@ for TRACKS in 1 2 4; do
     java -Xms10g -jar target/green-loader.jar -f load-configs/php-logging.json -b 6 -t $TRACKS
     
     # Micronaut
-    java -Xms10g -jar target/green-loader.jar -f load-configs/micronaut.json -b 6 -t $TRACKS
+    # Note: Disabled for now.
+    # java -Xms10g -jar target/green-loader.jar -f load-configs/micronaut.json -b 6 -t $TRACKS
 
     # Play!
     java -Xms10g -jar target/green-loader.jar -f load-configs/play.json -b 6 -t $TRACKS

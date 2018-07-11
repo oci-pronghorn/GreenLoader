@@ -39,7 +39,8 @@ for BITS in 0 2 4 6 8 10; do
     java -Xms10g -jar target/green-loader.jar -f load-configs/php-logging.json -b $BITS && sleep 10
     
     # Micronaut
-    java -Xms10g -jar target/green-loader.jar -f load-configs/micronaut.json -b $BITS && sleep 10
+    # Note: Disabled for now.
+    # java -Xms10g -jar target/green-loader.jar -f load-configs/micronaut.json -b $BITS && sleep 10
 
     # Play!
     java -Xms10g -jar target/green-loader.jar -f load-configs/play.json -b $BITS && sleep 10
