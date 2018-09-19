@@ -2,7 +2,7 @@
     "services": [
         {
             "name": "PHP",
-            "start": "httpd -dphp -fhttpd.conf -DFOREGROUND",
+            "start": "apache2 -dphp -fhttpd.conf -DFOREGROUND",
             "endpoint": "/hello.php",
             "port": 3313,
             "payload": {"name": "Rick", "happy": true, "age": 13}

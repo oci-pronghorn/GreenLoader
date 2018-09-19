@@ -44,7 +44,7 @@ public class PHWebServer  {
 		//show all these
 		serverConfig.setConcurrentChannelsPerDecryptUnit(10);
 		serverConfig.setConcurrentChannelsPerEncryptUnit(10);
-		serverConfig.setTracks(4); //fewer tracks lowers latency..
+
 		serverConfig.setHost("127.0.0.1");
 
 		//reduce memory consumed
@@ -115,15 +115,9 @@ public class PHWebServer  {
 				JSONExtractorCompleted extractor =
 						new JSONExtractor()
 						 .begin()
-						 
-					     .element(JSONType.TypeString, false, JSONAccumRule.First)					 
-						 	.asField("name",Fields.name)
-						 	
-					     .element(JSONType.TypeBoolean, false, JSONAccumRule.First)					 
-						 	.asField("happy",Fields.happy)
-						 	
-					     .element(JSONType.TypeInteger, false, JSONAccumRule.First)					 
-						 	.asField("age",Fields.age)	 
+						 .stringField("name",Fields.name)
+						 .booleanField("happy",Fields.happy)
+						 .integerField("age",Fields.age) 
 						 
 						 .finish();
 				

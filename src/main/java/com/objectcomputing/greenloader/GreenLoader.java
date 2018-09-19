@@ -1,26 +1,28 @@
 package com.objectcomputing.greenloader;
 
-import com.ociweb.gl.api.ArgumentParser;
-import com.ociweb.gl.api.GreenRuntime;
-import com.ociweb.gl.test.ParallelClientLoadTester;
-import com.ociweb.gl.test.ParallelClientLoadTesterConfig;
-import com.ociweb.gl.test.ParallelClientLoadTesterPayload;
-
-import com.eclipsesource.json.Json;
-import com.eclipsesource.json.JsonArray;
-import com.eclipsesource.json.JsonObject;
-import com.eclipsesource.json.JsonValue;
-import com.ociweb.pronghorn.network.ClientSocketWriterStage;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.net.Socket;
 import java.nio.file.Paths;
-import java.util.StringTokenizer;
 import java.util.Arrays;
+import java.util.StringTokenizer;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.eclipsesource.json.Json;
+import com.eclipsesource.json.JsonArray;
+import com.eclipsesource.json.JsonObject;
+import com.eclipsesource.json.JsonValue;
+import com.ociweb.gl.api.ArgumentParser;
+import com.ociweb.gl.api.GreenRuntime;
+import com.ociweb.gl.test.ParallelClientLoadTester;
+import com.ociweb.gl.test.ParallelClientLoadTesterConfig;
+import com.ociweb.gl.test.ParallelClientLoadTesterPayload;
+import com.ociweb.pronghorn.network.ClientAbandonConnectionScanner;
+import com.ociweb.pronghorn.network.ClientSocketReaderStage;
+import com.ociweb.pronghorn.network.ClientSocketWriterStage;
 
 /**
  * Automated load tester for various microservice frameworks using the Green
@@ -51,6 +53,8 @@ public class GreenLoader {
         // Enable or disable traffic logging.
         ClientSocketWriterStage.showWrites = logTraffic;
 
+        ClientSocketReaderStage.abandonSlowConnections = false;
+
         // Parse the load configuration.
         JsonObject file = Json.parse(new InputStreamReader(new FileInputStream(new File(fileName)))).asObject();
         JsonArray config = file.get("services").asArray();
@@ -71,8 +75,9 @@ public class GreenLoader {
 
             // Begin load test.
             logger.info("===============================================================================");
-            logger.info("Beginning load test for: {}", fqnServiceName);
-
+            logger.info("              BEGINNING LOAD TEST FOR: {}", fqnServiceName);
+            logger.info("===============================================================================");
+            
             // Start the service.
             StringTokenizer st = new StringTokenizer(serviceObject.getString("start", null));
             String[] cmdarray = new String[st.countTokens()];
@@ -105,6 +110,7 @@ public class GreenLoader {
             loadTesterConfig.host = "127.0.0.1";
             loadTesterConfig.simultaneousRequestsPerTrackBits = bits;
             loadTesterConfig.cycleRate = CYCLE_RATE;
+            loadTesterConfig.parallelTracks = 1;
 
             // Wait for service start.
             logger.info("Waiting for service port to become available...");
@@ -138,8 +144,8 @@ public class GreenLoader {
                         loadTesterConfig.host, loadTesterConfig.route, loadTesterConfig.port, bits);
             ParallelClientLoadTester tester = new ParallelClientLoadTester(loadTesterConfig, loadTesterPayload);
             GreenRuntime.testConcurrentUntilShutdownRequested(tester, DURATION);
-            logger.info("Load test complete.");
-
+            logger.info("Load test complete for {}.",fqnServiceName);
+            
             // Stop service.
             logger.info("Stopping service.");
             process.destroy();

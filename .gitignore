@@ -19,3 +19,6 @@ php/tmp/*
 !php/tmp/locker
 play/logs/*
 logs/
+/.attach_pid13971
+/nightlyRun.txt
+/secondRun.txt

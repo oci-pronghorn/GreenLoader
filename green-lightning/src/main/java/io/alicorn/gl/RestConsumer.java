@@ -2,14 +2,13 @@ package io.alicorn.gl;
 
 import com.ociweb.gl.api.*;
 import com.ociweb.pronghorn.pipe.ChannelWriter;
+import com.ociweb.pronghorn.pipe.StructuredReader;
+import com.ociweb.pronghorn.pipe.StructuredWriter;
 
 public class RestConsumer implements RestListener {
 
     private final GreenCommandChannel cmd2;
     private final HTTPResponseService httpResponseService;
-    private final long fieldA;
-    private final long fieldB;
-    private final long fieldC;
 
     private HTTPRequestReader requestW;
     private PubSubService pubSubService;
@@ -21,21 +20,24 @@ public class RestConsumer implements RestListener {
             // Write connection data.
             writer.writePackedLong(requestW.getConnectionId());
             writer.writePackedLong(requestW.getSequenceCode());
-
-            // Write JSON data.
-            writer.writeUTF(requestW.structured().readText(fieldA));
-            writer.writeBoolean(requestW.structured().readBoolean(fieldB));
-            writer.writeInt(requestW.structured().readInt(fieldC));
+            
+            StructuredReader sReader = requestW.structured();
+			StructuredWriter sWriter = writer.structured();
+			
+			//sReader.readText(Field.NAME, sWriter.writeBlob(Field.NAME)); //is this broken??
+			sWriter.writeText(Field.NAME, sReader.readText(Field.NAME));
+            sWriter.writeBoolean(Field.HAPPY, sReader.readBoolean(Field.HAPPY));
+            sWriter.writeInt(Field.AGE, sReader.readInt(Field.AGE));
+            sWriter.selectStruct(Struct.PAYLOAD);
+		
         }
 
     };
-    public RestConsumer(GreenRuntime runtime, long fieldA, long fieldB, long fieldC) {
+    public RestConsumer(GreenRuntime runtime) {
         this.cmd2 = runtime.newCommandChannel();
         httpResponseService = cmd2.newHTTPResponseService();
         pubSubService = cmd2.newPubSubService();
-        this.fieldA = fieldA;
-        this.fieldB = fieldB;
-        this.fieldC = fieldC;
+
     }
 
 

@@ -1,12 +1,12 @@
 package io.alicorn.gl;
 
-import com.ociweb.gl.api.*;
-import com.ociweb.json.JSONExtractorImpl;
-import com.ociweb.json.JSONExtractorCompleted;
-import com.ociweb.json.JSONType;
+import com.ociweb.gl.api.GreenApp;
+import com.ociweb.gl.api.GreenFramework;
+import com.ociweb.gl.api.GreenRuntime;
 import com.ociweb.pronghorn.network.HTTPServerConfig;
+import com.ociweb.pronghorn.struct.StructType;
 
-public class GlHello implements GreenAppParallel {
+public class GlHello implements GreenApp {
     public static void main(String[] args) {
         GreenRuntime.run(new GlHello(false, Integer.valueOf(args[1]), Boolean.valueOf(args[0]), Boolean.valueOf(args[2])));
     }
@@ -16,8 +16,6 @@ public class GlHello implements GreenAppParallel {
 	private final boolean telemtry;
 	private final boolean logging;
 
-	// Trackers for JSON.
-	private long name_a, name_b, name_c;
 
 	// Route IDs.
 	private int primaryRoute;
@@ -31,41 +29,46 @@ public class GlHello implements GreenAppParallel {
 	}
 
     @Override
-	public void declareConfiguration(Builder builder) {
-		HTTPServerConfig conf = builder.useHTTP1xServer(port);
+	public void declareConfiguration(GreenFramework builder) {
+    	
+    	
+		HTTPServerConfig conf = builder.useHTTP1xServer(port, 2, this::declareParallelBehavior);
 
 		if (logging) {
 			conf.logTraffic(false);
 		}
 
 		conf.setHost("127.0.0.1");
-		conf.setConcurrentChannelsPerDecryptUnit(10);
-		conf.setConcurrentChannelsPerEncryptUnit(10);
-		builder.parallelTracks(4);
+		conf.setConcurrentChannelsPerDecryptUnit(2);
+		conf.setConcurrentChannelsPerEncryptUnit(2);
+		conf.setMaxRequestSize(1<<14);
+		
 		
 		if (!tls) {
 			conf.useInsecureServer();
 		}
 
-		// Define JSON extraction behavior.
-        JSONExtractorCompleted extractor =
-                new JSONExtractorImpl()
-                        .newPath(JSONType.TypeString).completePath("name", "name_a")
-                        .newPath(JSONType.TypeBoolean).completePath("happy", "name_b")
-                        .newPath(JSONType.TypeInteger).completePath("age", "name_c");
-
 		// Define route for receiving request.
-		primaryRoute = builder.defineRoute(extractor).path("/hello").routeId();
+		primaryRoute = builder.defineRoute()
+				.parseJSON()					
+					.stringField("name", Field.NAME)
+					.booleanField("happy", Field.HAPPY)
+					.integerField("age", Field.AGE)
+				.path("/hello").routeId();
 
-		// Extract JSON element IDs.
-        name_a = builder.lookupFieldByName(primaryRoute, "name_a");
-        name_b = builder.lookupFieldByName(primaryRoute, "name_b");
-        name_c = builder.lookupFieldByName(primaryRoute, "name_c");
 
 		// Define topic for publishing from the request receiver to the request responder.
-        builder.definePrivateTopic(1 << 16, 100, "/send/200", "consumer", "responder");
+        builder.definePrivateTopic(1 << 14, 100, "/send/200", "consumer", "responder");
+       
         builder.usePrivateTopicsExclusively();
 		
+        builder.defineStruct()
+               .addField("name", StructType.Text, Field.NAME)
+               .addField("happy", StructType.Boolean, Field.HAPPY)
+               .addField("age", StructType.Integer, Field.AGE)
+               .register(Struct.PAYLOAD);
+               
+               
 		if (telemtry) {
 			builder.enableTelemetry();
 		}
@@ -79,11 +82,11 @@ public class GlHello implements GreenAppParallel {
 	@Override
 	public void declareBehavior(GreenRuntime runtime) {	}
 
-	@Override
+	
 	public void declareParallelBehavior(GreenRuntime runtime) {
 
 	    // Add a consumer for handling the inbound REST requests.
-        runtime.addRestListener("consumer", new RestConsumer(runtime, name_a, name_b, name_c))
+        runtime.addRestListener("consumer", new RestConsumer(runtime))
 				.includeRoutes(primaryRoute);
 
         // Add a responder for handling the outbound REST responses.

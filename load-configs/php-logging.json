@@ -2,7 +2,7 @@
     "services": [
         {
             "name": "PHP-Logging",
-            "start": "httpd -dphp -fhttpd.conf -DFOREGROUND -DLogging",
+            "start": "apache2 -dphp -fhttpd.conf -DFOREGROUND -DLogging",
             "endpoint": "/hello.php",
             "port": 3314,
             "payload": {"name": "Rick", "happy": true, "age": 13}
