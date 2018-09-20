@@ -8,6 +8,7 @@ import com.ociweb.gl.api.GreenRuntime;
 import com.ociweb.gl.test.LoadTester;
 import com.ociweb.json.encode.JSONRenderer;
 import com.ociweb.pronghorn.network.ClientSocketReaderStage;
+import com.ociweb.pronghorn.network.ServerSocketWriterStage;
 import com.ociweb.pronghorn.stage.scheduling.GraphManager;
 
 public class MainTest {
@@ -31,21 +32,10 @@ public class MainTest {
 
 	@BeforeClass
 	public static void startServer() {
-
-		//GraphManager.combineCommonEdges = false;//TODO: need to add new cycle volume data to common edge...
-		
-		//GraphManager.showThreadIdOnTelemetry = true;
-		//GraphManager.showScheduledRateOnTelemetry = true;
-		//GraphManager.showMessageCountRangeOnTelemetry = true;
-		
-		//ServerSocketWriterStage.lowLatency = false;
-		//ServerSocketWriterStage.hardLimtNS = 16_000;//ns
-		
-		//for cloud testing we bump this up since it may be running on very slow hardware
-		//ClientAbandonConnectionScanner.absoluteNSToKeep =      2_000_000_000L; //2sec calls are always OK.
+		GraphManager.showThreadIdOnTelemetry = true;
 		ClientSocketReaderStage.abandonSlowConnections = false;
 		
-		runtime = GreenRuntime.run(new GlHello(false, 3302, true, false));
+		runtime = GreenRuntime.run(new GlHello(false, 3302, false, false));
 		
 	}
 		
@@ -65,9 +55,8 @@ public class MainTest {
 
 	
 	@Test
-	public void uploadProductsTest() {
+	public void uploadTest() {
 
-		GraphManager.combineCommonEdges = false;
 		ClientSocketReaderStage.abandonSlowConnections = false;
 		
 		final Person samePerson = new Person("Rick", true, 13);
@@ -77,9 +66,9 @@ public class MainTest {
 				 (i,r)->{return true;},
 				 "/hello",
 				 false,
-				 true,				 
+				 false,				 
 				 1,
-				 200_000,
+				 2_000_000,
 				 "127.0.0.1",
 				 3302,
 				 10_000_000,//timeout MS

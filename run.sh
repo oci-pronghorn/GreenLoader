@@ -12,14 +12,6 @@ for BITS in 10 8 6 4 2 0; do
     # Note: For PHP logging, we MUST delete its logs between runs; it just creates too much data.
     #rm -rf php/logs/error_log
     #java -Xms10g -jar target/green-loader.jar -f load-configs/php-logging.json -b $BITS && sleep 10
-
-     # Node
-    java -Xms10g -jar target/green-loader.jar -f load-configs/node.json -b $BITS && sleep 10
-    java -Xms10g -jar target/green-loader.jar -f load-configs/node-logging.json -b $BITS && sleep 10
-    
-     # Jetty
-    java -Xms10g -jar target/green-loader.jar -f load-configs/jetty.json -b $BITS && sleep 10
-    java -Xms10g -jar target/green-loader.jar -f load-configs/jetty-logging.json -b $BITS && sleep 10
     
     # Green Lightning
     java -Xms10g -jar target/green-loader.jar -f load-configs/glt.json -b $BITS && sleep 10
@@ -33,6 +25,14 @@ for BITS in 10 8 6 4 2 0; do
     java -Xms10g -jar target/green-loader.jar -f load-configs/ph.json -b $BITS && sleep 10
     java -Xms10g -jar target/green-loader.jar -f load-configs/phl.json -b $BITS && sleep 10
 
+     # Node
+    java -Xms10g -jar target/green-loader.jar -f load-configs/node.json -b $BITS && sleep 10
+    java -Xms10g -jar target/green-loader.jar -f load-configs/node-logging.json -b $BITS && sleep 10
+    
+     # Jetty
+    java -Xms10g -jar target/green-loader.jar -f load-configs/jetty.json -b $BITS && sleep 10
+    java -Xms10g -jar target/green-loader.jar -f load-configs/jetty-logging.json -b $BITS && sleep 10
+    
     # Play!
     java -Xms10g -jar target/green-loader.jar -f load-configs/play.json -b $BITS && sleep 10
 

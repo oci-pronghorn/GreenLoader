@@ -42,13 +42,16 @@ public class PHWebServer  {
 		HTTPServerConfig serverConfig = NetGraphBuilder.serverConfig(port, gm);
 
 		//show all these
-		serverConfig.setConcurrentChannelsPerDecryptUnit(10);
-		serverConfig.setConcurrentChannelsPerEncryptUnit(10);
+		serverConfig.setConcurrentChannelsPerDecryptUnit(2);
+		serverConfig.setConcurrentChannelsPerEncryptUnit(2);
+		serverConfig.setMaxRequestSize(1<<16);
+		serverConfig.setMaxQueueIn(1024);
+		serverConfig.setMaxQueueOut(256);
 
 		serverConfig.setHost("127.0.0.1");
 
 		//reduce memory consumed
-		serverConfig.setMaxRequestSize(1<<17);//split out by 1.5K
+		serverConfig.setMaxRequestSize(1<<14);//split out by 1.5K
 		
 		if (logging) {
 			serverConfig.logTraffic(false);

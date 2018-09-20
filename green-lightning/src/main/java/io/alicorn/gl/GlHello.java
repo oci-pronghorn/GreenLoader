@@ -41,7 +41,9 @@ public class GlHello implements GreenApp {
 		conf.setHost("127.0.0.1");
 		conf.setConcurrentChannelsPerDecryptUnit(2);
 		conf.setConcurrentChannelsPerEncryptUnit(2);
-		conf.setMaxRequestSize(1<<14);
+		conf.setMaxRequestSize(1<<16);
+		conf.setMaxQueueIn(1024);
+		conf.setMaxQueueOut(128);
 		
 		
 		if (!tls) {
